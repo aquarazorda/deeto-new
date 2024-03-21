@@ -16,14 +16,28 @@ import { Route as rootRoute } from './routes/__root'
 
 // Create Virtual Routes
 
+const ReferenceLazyImport = createFileRoute('/_reference')()
 const IndexLazyImport = createFileRoute('/')()
+const ReferenceReferenceLazyImport = createFileRoute('/_reference/reference')()
 
 // Create/Update Routes
+
+const ReferenceLazyRoute = ReferenceLazyImport.update({
+  id: '/_reference',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/_reference.lazy').then((d) => d.Route))
 
 const IndexLazyRoute = IndexLazyImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
+
+const ReferenceReferenceLazyRoute = ReferenceReferenceLazyImport.update({
+  path: '/reference',
+  getParentRoute: () => ReferenceLazyRoute,
+} as any).lazy(() =>
+  import('./routes/_reference/reference.lazy').then((d) => d.Route),
+)
 
 // Populate the FileRoutesByPath interface
 
@@ -33,11 +47,22 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexLazyImport
       parentRoute: typeof rootRoute
     }
+    '/_reference': {
+      preLoaderRoute: typeof ReferenceLazyImport
+      parentRoute: typeof rootRoute
+    }
+    '/_reference/reference': {
+      preLoaderRoute: typeof ReferenceReferenceLazyImport
+      parentRoute: typeof ReferenceLazyImport
+    }
   }
 }
 
 // Create and export the route tree
 
-export const routeTree = rootRoute.addChildren([IndexLazyRoute])
+export const routeTree = rootRoute.addChildren([
+  IndexLazyRoute,
+  ReferenceLazyRoute.addChildren([ReferenceReferenceLazyRoute]),
+])
 
 /* prettier-ignore-end */

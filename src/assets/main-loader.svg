@@ -1,53 +1,4 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React + TS</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@400.800&display=swap&subset=latin"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400..800&display=swap&subset=latin"
-      rel="stylesheet"
-      loading="lazy"
-    />
-    <style>
-      body {
-        margin: 0;
-        padding: 0;
-      }
-      .loader {
-        height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      .loader path {
-        stroke: #471453;
-        animation: logo-animation 5s linear 1s both;
-        animation-iteration-count: infinite;
-      }
-      @keyframes logo-animation {
-        70% {
-          stroke-dashoffset: 0;
-          fill: #47145300;
-        }
-        100% {
-          stroke-dashoffset: 0;
-          fill: #471453;
-        }
-      }
-    </style>
-  </head>
-  <body class="font-sans">
-    <div id="app">
-      <div class="loader">
-        <svg
+<svg
           width="632"
           height="179"
           viewBox="0 0 632 179"
@@ -80,8 +31,4 @@
             d="M68.8497 141.096C51.1893 141.096 40.9795 127.604 40.9795 111.021C40.9795 94.4385 51.1893 82.6337 68.8497 82.6337H78.5076C83.1987 82.6337 93.4086 81.5094 96.168 78.6988H96.4439V111.021C96.4439 130.696 86.51 141.096 68.8497 141.096ZM68.8497 178.196C108.034 178.196 136.456 154.025 136.456 111.021V0H96.4439V22.4854C96.4439 36.5387 92.5807 45.5329 72.161 45.5329H68.8497C33.2531 45.5329 0.967773 68.5803 0.967773 111.021C0.967773 153.463 29.6658 178.196 68.8497 178.196Z"
           ></path>
         </svg>
-      </div>
-    </div>
-    <script type="module" src="/src/App.tsx"></script>
-  </body>
-</html>
+
