@@ -24,7 +24,10 @@ module.exports = {
       white: "#FFFFFF",
       black: "#000000",
       grey: "#D3D3D3",
-      "primary-purple": "#481453",
+      primary: {
+        DEFAULT: "#481453",
+        foreground: "#FFFFFF",
+      },
       "primary-yellow": "#FFC400",
       "primary-blue": "#0F8CFF",
       "secondary-green": "#00BA55",
@@ -69,10 +72,6 @@ module.exports = {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
-        primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
-        },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
@@ -102,6 +101,7 @@ module.exports = {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+        100: "100px",
       },
       keyframes: {
         "accordion-down": {

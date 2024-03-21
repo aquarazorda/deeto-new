@@ -1,6 +1,6 @@
 import MainLoader from "@/assets/main-loader.svg?react";
 import { Providers } from "@/components/providers";
-import { createRootRoute, Link, Outlet } from "@tanstack/react-router";
+import { createRootRoute, Outlet } from "@tanstack/react-router";
 import { lazy, Suspense } from "react";
 import { fetchUser } from "@/lib/states/user";
 import { getCookie } from "@/lib/cookie";

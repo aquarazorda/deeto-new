@@ -52,7 +52,7 @@ const fetcher = async <T extends ZodType>(
 const get = <T extends ZodType>(url: string, schema: T) =>
   fetcher<T>(url, schema);
 
-const post = <T extends ZodType, U>(url: string, schema: T, body: U) =>
+const post = <T extends ZodType, U>(url: string, body: U, schema: T) =>
   fetcher(url, schema, {
     method: "POST",
     body: JSON.stringify(body),
