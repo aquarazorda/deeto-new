@@ -19,6 +19,5 @@ export const accountContactSchema = z.object({
     .object({
       companyName: z.string(),
     })
-    .strict()
     .optional(),
 });

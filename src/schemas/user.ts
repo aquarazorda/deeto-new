@@ -6,7 +6,7 @@ const meSchema = z
   .object({
     accountContacts: z.array(accountContactSchema).optional(),
     avatar: z.object({
-      url: z.string().optional(),
+      url: z.string().nullable().optional(),
     }),
     customizedFormValues: z.array(customizedFormValue).optional(),
     privileges: z.array(z.enum(["reference", "vendor", "prospect"])),
@@ -18,6 +18,13 @@ const meSchema = z
     isProspect: privileges.includes("prospect"),
   }));
 
+const vendorSchema = z.object({
+  appLogo: z.object({
+    url: z.string().nullable().optional(),
+  }),
+});
+
 export const userSchema = z.object({
   me: meSchema,
+  vendor: vendorSchema,
 });

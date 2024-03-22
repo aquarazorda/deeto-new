@@ -6,5 +6,5 @@ export const customizedFormValue = z.object({
   fieldName: z.string().optional(),
   fieldLabel: z.string().optional(),
   valueCaption: z.string().nullable().optional(),
-  value: z.array(z.string()),
+  value: z.string().or(z.array(z.string())),
 });

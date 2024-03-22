@@ -26,7 +26,7 @@ function Index() {
   }
 
   return match(privileges)
-    .with({ isReference: true }, () => <Navigate to="/reference" />)
+    .with({ isReference: true }, () => <Navigate to="/dashboard" />)
     .with(
       { isReference: undefined, isProspect: undefined, isVendor: undefined },
       () => <Spinner />,

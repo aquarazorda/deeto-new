@@ -4,34 +4,71 @@ import { z } from "zod";
 import { userSchema } from "@/schemas/user";
 import { getCookie, setCookie } from "../cookie";
 import { Err } from "ts-results";
-import { authResponseSchema } from "@/schemas/auth";
+import { P, match } from "ts-pattern";
 
 type UserState = Partial<z.infer<typeof userSchema>>;
 
 export const useUser = create<UserState>(() => ({}));
 
-export const fetchUser = async () => {
-  if (!getCookie("accessToken")) {
-    useUser.setState({});
-    return new Err("No access token");
+const refreshTokenSchema = z.object({
+  accessToken: z.string(),
+  refreshToken: z.string(),
+});
+
+const getAccessTokenWithRefreshToken = async (refreshToken: string) => {
+  const res = await api.post("REFRESH_TOKEN", refreshTokenSchema, {
+    refreshToken,
+  });
+
+  if (!res.ok) {
+    setCookie("accessToken", "", 0, true);
+    setCookie("refreshToken", "", 0, true);
+  } else {
+    setTokens(res.val);
   }
 
-  const res = await api.get("USER_PATH", userSchema);
-
-  if (res.ok) {
-    useUser.setState(res.val);
-    return res;
-  }
-
-  useUser.setState({});
   return res;
 };
 
-export const setTokensAndGetUser = async ({
-  accessToken,
-  refreshToken,
-}: z.infer<typeof authResponseSchema>) => {
+const userFetchReq = () => api.get("USER_PATH", userSchema);
+
+const validateAndSetUser = (data: Awaited<ReturnType<typeof userFetchReq>>) => {
+  if (data.ok) {
+    useUser.setState(data.val);
+    return data;
+  }
+
+  useUser.setState({});
+  return data;
+};
+export const fetchUser = async () => {
+  const accessToken = getCookie("accessToken");
+  const refreshToken = getCookie("refreshToken");
+
+  return match([accessToken, refreshToken])
+    .with([undefined, undefined], () => {
+      useUser.setState({});
+      return new Err("No access token");
+    })
+    .with([undefined, P.select(P.string)], (refreshToken) =>
+      getAccessTokenWithRefreshToken(refreshToken)
+        .then(userFetchReq)
+        .then(validateAndSetUser),
+    )
+    .otherwise(() => userFetchReq().then(validateAndSetUser));
+};
+
+type Tokens = {
+  accessToken: string;
+  refreshToken: string;
+};
+
+const setTokens = ({ accessToken, refreshToken }: Tokens) => {
   setCookie("accessToken", accessToken, 172800, true);
   setCookie("refreshToken", refreshToken, 604800, true);
-  await fetchUser();
+};
+
+export const setTokensAndGetUser = async (tokens: Tokens) => {
+  setTokens(tokens);
+  return await fetchUser();
 };

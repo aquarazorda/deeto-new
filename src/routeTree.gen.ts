@@ -21,7 +21,7 @@ import { Route as PublicMIndexImport } from './routes/_public/m.index'
 const ReferenceLazyImport = createFileRoute('/_reference')()
 const PublicLazyImport = createFileRoute('/_public')()
 const IndexLazyImport = createFileRoute('/')()
-const ReferenceReferenceLazyImport = createFileRoute('/_reference/reference')()
+const ReferenceDashboardLazyImport = createFileRoute('/_reference/dashboard')()
 const PublicLoginWithEmailLazyImport = createFileRoute(
   '/_public/login-with-email',
 )()
@@ -43,11 +43,11 @@ const IndexLazyRoute = IndexLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
 
-const ReferenceReferenceLazyRoute = ReferenceReferenceLazyImport.update({
-  path: '/reference',
+const ReferenceDashboardLazyRoute = ReferenceDashboardLazyImport.update({
+  path: '/dashboard',
   getParentRoute: () => ReferenceLazyRoute,
 } as any).lazy(() =>
-  import('./routes/_reference/reference.lazy').then((d) => d.Route),
+  import('./routes/_reference/dashboard.lazy').then((d) => d.Route),
 )
 
 const PublicLoginWithEmailLazyRoute = PublicLoginWithEmailLazyImport.update({
@@ -91,8 +91,8 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicLoginWithEmailLazyImport
       parentRoute: typeof PublicLazyImport
     }
-    '/_reference/reference': {
-      preLoaderRoute: typeof ReferenceReferenceLazyImport
+    '/_reference/dashboard': {
+      preLoaderRoute: typeof ReferenceDashboardLazyImport
       parentRoute: typeof ReferenceLazyImport
     }
     '/_public/m/': {
@@ -111,7 +111,7 @@ export const routeTree = rootRoute.addChildren([
     PublicLoginWithEmailLazyRoute,
     PublicMIndexRoute,
   ]),
-  ReferenceLazyRoute.addChildren([ReferenceReferenceLazyRoute]),
+  ReferenceLazyRoute.addChildren([ReferenceDashboardLazyRoute]),
 ])
 
 /* prettier-ignore-end */
