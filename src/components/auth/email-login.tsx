@@ -2,7 +2,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Card, CardContent } from "../ui/card";
 import { z } from "zod";
-import { Form, FormControl, FormField, FormItem } from "../ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "../ui/form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { api } from "@/lib/requests";
@@ -23,7 +29,7 @@ function EmailLoginInner() {
   const { executeRecaptcha } = useGoogleReCaptcha();
   const { t } = useTranslation();
 
-  const { data, mutateAsync, isPending } = useMutation({
+  const { data, mutateAsync, isPending, reset } = useMutation({
     mutationFn: async (email: string) => {
       if (!executeRecaptcha) {
         return;
@@ -57,10 +63,21 @@ function EmailLoginInner() {
 
   if (data?.ok) {
     return (
-      <div className="flex gap-12">
+      <div className="flex gap-12 space-y-6 p-12">
         <img src="/assets/login-email.svg" />
-        <div>
-          <h2>{t("registration.heading.check_email")}</h2>
+        <div className="flex flex-col gap-2 text-xl">
+          <h2 className="text-4xl">{t("registration.heading.check_email")}</h2>
+          <p>
+            {t("registration.confirmation_link", {
+              email: form.getValues("email"),
+            })}
+          </p>
+          <p>
+            {t("no_email")}{" "}
+            <Button variant="ghost" onClick={reset}>
+              {t("click_here")}
+            </Button>
+          </p>
         </div>
       </div>
     );
@@ -80,6 +97,7 @@ function EmailLoginInner() {
               <FormControl>
                 <Input {...field} />
               </FormControl>
+              <FormMessage>{data?.err ? data.val : null}</FormMessage>
             </FormItem>
           )}
         />
@@ -88,6 +106,7 @@ function EmailLoginInner() {
             className="ml-auto"
             disabled={!form.formState.isValid}
             loading={isPending}
+            type="submit"
           >
             {t("continue")}
           </Button>

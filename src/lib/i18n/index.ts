@@ -19,7 +19,7 @@ i18n
   .init<HttpBackendOptions>({
     supportedLngs: ["en", "es", "fr"],
     backend: {
-      loadPath: "/lang/{{lng}}.json",
+      loadPath: "/lang/{{lng}}.json?v=Oct29",
     },
     fallbackLng: "en",
   });

@@ -5,7 +5,7 @@ import { BACKEND_URL } from "@/config";
 
 const responseSchema = z.object({
   code: z.number(),
-  message: z.literal("success"),
+  message: z.string(),
   data: z.any().optional(),
 });
 
