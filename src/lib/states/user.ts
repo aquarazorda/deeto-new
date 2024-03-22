@@ -41,21 +41,41 @@ const validateAndSetUser = (data: Awaited<ReturnType<typeof userFetchReq>>) => {
   useUser.setState({});
   return data;
 };
-export const fetchUser = async () => {
-  const accessToken = getCookie("accessToken");
-  const refreshToken = getCookie("refreshToken");
 
+const fetchUserFn = async ({ accessToken, refreshToken }: Partial<Tokens>) => {
   return match([accessToken, refreshToken])
     .with([undefined, undefined], () => {
       useUser.setState({});
-      return new Err("No access token");
+      return new Err("No tokens");
     })
     .with([undefined, P.select(P.string)], (refreshToken) =>
       getAccessTokenWithRefreshToken(refreshToken)
         .then(userFetchReq)
         .then(validateAndSetUser),
     )
-    .otherwise(() => userFetchReq().then(validateAndSetUser));
+    .otherwise(() =>
+      userFetchReq()
+        .then(validateAndSetUser)
+        .then(async (res) => {
+          if (res.ok) return res;
+
+          setCookie("accessToken", "", 0, true);
+          await fetchUserFn({ refreshToken });
+
+          return new Err("No tokens");
+        }),
+    );
+};
+
+export const fetchUser = async () => {
+  if (window.location.href.includes("/m?")) {
+    return;
+  }
+
+  return fetchUserFn({
+    accessToken: getCookie("accessToken"),
+    refreshToken: getCookie("refreshToken"),
+  });
 };
 
 type Tokens = {

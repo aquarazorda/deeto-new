@@ -29,6 +29,7 @@ const fetcher = async <T extends ZodType>(
       .then(responseSchema.safeParse);
 
     if (!res.success) {
+      console.error(res.error);
       return new Err(res.error.toString());
     }
 
@@ -38,6 +39,7 @@ const fetcher = async <T extends ZodType>(
 
     const validated = schema.safeParse(res.data.data);
     if (!validated.success) {
+      console.error(validated.error);
       return new Err(validated.error.toString());
     }
 

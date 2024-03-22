@@ -1,15 +1,4 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactNode, Suspense, lazy } from "react";
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-    },
-  },
-});
 
 const TanStackRouterDevtools =
   process.env.NODE_ENV === "production"
@@ -31,7 +20,7 @@ const TanStackQueryDevTools =
 
 export const Providers = ({ children }: { children: ReactNode }) => {
   return (
-    <QueryClientProvider client={queryClient}>
+    <>
       {children}
       <Suspense>
         <TanStackQueryDevTools initialIsOpen={false} />
@@ -39,6 +28,6 @@ export const Providers = ({ children }: { children: ReactNode }) => {
       <Suspense>
         <TanStackRouterDevtools />
       </Suspense>
-    </QueryClientProvider>
+    </>
   );
 };
