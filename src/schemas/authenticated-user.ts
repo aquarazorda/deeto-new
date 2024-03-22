@@ -1,17 +1,21 @@
 import { z } from "zod";
 
+export const avatarSchema = z.object({
+  type: z.enum(["default", "initial", "picture"]),
+  url: z.string().url().optional(),
+});
+
 export const authenticatedUserSchema = z.object({
-  username: z.string().min(0).max(100).optional(),
-  firstName: z.string().optional(),
-  lastName: z.string().optional(),
-  email: z.string().optional(),
-  preferredTimezone: z.string().nullable().optional(),
-  profilePicture: z
-    .object({
-      type: z.string().optional(),
-      url: z.string().optional(),
-    })
-    .strict()
-    .optional(),
-  userStatus: z.string().optional(),
+  authenticatedUserID: z.string().uuid(),
+  username: z.string(),
+  firstName: z.string(),
+  lastName: z.string(),
+  email: z.string().email(),
+  userStatus: z
+    .enum(["confirmed", "pending", "locked"])
+    .describe("User Status"),
+  privileges: z.array(z.string().describe("reference")),
+  profilePicture: avatarSchema,
+  redeemableBalance: z.number(),
+  preferredTimezone: z.string().describe("UTC+5"),
 });
