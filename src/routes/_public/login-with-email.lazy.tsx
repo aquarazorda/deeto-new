@@ -1,6 +1,8 @@
+import { createLazyFileRoute } from "@tanstack/react-router";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Card, CardContent } from "../ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { z } from "zod";
 import {
   Form,
@@ -8,21 +10,20 @@ import {
   FormField,
   FormItem,
   FormMessage,
-} from "../ui/form";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { api } from "@/lib/requests";
-import { endpoints } from "@/lib/endpoints";
 import { useMutation } from "@tanstack/react-query";
-import {
-  GoogleReCaptchaProvider,
-  useGoogleReCaptcha,
-} from "react-google-recaptcha-v3";
-import { RECAPTCHA_KEY } from "@/config";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { useTranslation } from "react-i18next";
 
 const schema = z.object({
   email: z.string().email(),
+});
+
+export const Route = createLazyFileRoute("/_public/login-with-email")({
+  component: EmailLogin,
 });
 
 function EmailLoginInner() {
@@ -38,14 +39,14 @@ function EmailLoginInner() {
       const captchaToken = await executeRecaptcha();
 
       const res = await api.post(
-        endpoints.LOGIN_WITH_MAIL_PATH,
+        "LOGIN_WITH_MAIL_PATH",
+        z.object({
+          success: z.boolean(),
+        }),
         {
           email,
           captchaToken,
         },
-        z.object({
-          success: z.boolean(),
-        }),
       );
 
       return res;
@@ -116,16 +117,12 @@ function EmailLoginInner() {
   );
 }
 
-export default function EmailLogin() {
+function EmailLogin() {
   return (
-    <GoogleReCaptchaProvider reCaptchaKey={RECAPTCHA_KEY}>
-      <div className="flex h-screen w-screen items-center justify-center bg-yellow-red px-12">
-        <Card className="w-[700px] rounded-tl-none">
-          <CardContent>
-            <EmailLoginInner />
-          </CardContent>
-        </Card>
-      </div>
-    </GoogleReCaptchaProvider>
+    <Card className="w-[700px] rounded-tl-none">
+      <CardContent>
+        <EmailLoginInner />
+      </CardContent>
+    </Card>
   );
 }

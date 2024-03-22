@@ -1,13 +1,30 @@
-import { createLazyFileRoute } from "@tanstack/react-router";
+import { getCookie } from "@/lib/cookie";
+import { useUser } from "@/lib/states/user";
+import { Navigate, createLazyFileRoute } from "@tanstack/react-router";
+import { match } from "ts-pattern";
+import { useMemo } from "react";
+import { useShallow } from "zustand/react/shallow";
 
 export const Route = createLazyFileRoute("/")({
   component: Index,
 });
 
 function Index() {
-  return (
-    <div className="p-2">
-      <h3>Welcome Home!</h3>
-    </div>
+  const hasToken = useMemo(() => getCookie("accessToken"), []);
+
+  const privileges = useUser(
+    useShallow((state) => ({
+      isVendor: state.me?.isVendor,
+      isProspect: state.me?.isProspect,
+      isReference: state.me?.isReference,
+    })),
   );
+
+  if (!hasToken) {
+    return <Navigate to="/login-with-email" />;
+  }
+
+  return match(privileges)
+    .with({ isReference: true }, () => <Navigate to="/reference" />)
+    .otherwise(() => "Not implemented yet.");
 }
