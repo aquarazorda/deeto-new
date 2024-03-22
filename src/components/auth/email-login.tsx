@@ -13,6 +13,7 @@ import {
   useGoogleReCaptcha,
 } from "react-google-recaptcha-v3";
 import { RECAPTCHA_KEY } from "@/config";
+import { useTranslation } from "react-i18next";
 
 const schema = z.object({
   email: z.string().email(),
@@ -20,6 +21,7 @@ const schema = z.object({
 
 function EmailLoginInner() {
   const { executeRecaptcha } = useGoogleReCaptcha();
+  const { t } = useTranslation();
 
   const { data, mutateAsync, isPending } = useMutation({
     mutationFn: async (email: string) => {
@@ -58,7 +60,7 @@ function EmailLoginInner() {
       <div className="flex gap-12">
         <img src="/assets/login-email.svg" />
         <div>
-          <h2>Check your email.</h2>
+          <h2>{t("registration.heading.check_email")}</h2>
         </div>
       </div>
     );
@@ -68,7 +70,7 @@ function EmailLoginInner() {
     <Form {...form}>
       <form className="space-y-6 p-12" onSubmit={form.handleSubmit(onSubmit)}>
         <h1 className="font-inter text-4xl font-medium text-primary">
-          What's your email?
+          {t("registration.heading.what_is_your_email")}
         </h1>
         <FormField
           name="email"
@@ -87,7 +89,7 @@ function EmailLoginInner() {
             disabled={!form.formState.isValid}
             loading={isPending}
           >
-            Continue
+            {t("continue")}
           </Button>
         </div>
       </form>

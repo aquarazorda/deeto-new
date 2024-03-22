@@ -1,0 +1,22 @@
+{
+  "registration.what_company_name": "What is your School name?",
+  "infoTab.company_name": "School Name",
+  "registration.heading.company_logo": "Add your school logo",
+  "company_size": "School size",
+  "company_profile": "School profile",
+  "profile.company_name": "School Name",
+  "profile.size_of_company": "Size of School",
+  "based_on_deetos_smart_matching_algorithm_sending_these_references_based_on_similar_use_cases_industry_company_size_and_reference_rating": "Based on Deeto's smart matching algorithm sending these references, based on similar use cases, industry, school size, and reference rating",
+  "fields.error.reference_companyName": "Company Name is required",
+  "fields.error.companyName_length": "Company Name shouldn't be longer than 50 letters",
+  "fields.error.reference_companySize": "Company size is required",
+  "fields.error.company_size": "Company size is required",
+  "fields.error.companyName": "Company Name is required",
+  "fields.error.companySize": "Company size is required",
+  "infoTab.size_company": "Size Of Company",
+  "info_card_heading_setUpCompanyProfile": "Set up your school profile",
+  "reference_settings_placeholder": "We selected Jill as a reference because we also helped his school launch their product from conception to execution.",
+  "reuse_company_logo_for_the_email": "Reuse school logo for the email",
+  "whats_your_company_name": "Whats your school name ?",
+  "select_references_step_subtext": "We recommend sending these references, based on similar use cases, industry, school size, and reference rating."
+  }
