@@ -4,6 +4,7 @@ import { createRootRoute, Outlet } from "@tanstack/react-router";
 import { Suspense } from "react";
 
 import "../globals.css";
+import { fetchUser } from "@/lib/states/user";
 
 export const Route = createRootRoute({
   component: () => {
@@ -21,4 +22,5 @@ export const Route = createRootRoute({
       </Providers>
     );
   },
+  beforeLoad: fetchUser,
 });

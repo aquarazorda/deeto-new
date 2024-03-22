@@ -8,7 +8,7 @@ const meSchema = z
     avatar: z.object({
       url: z.string().optional(),
     }),
-    customizedFormValues: z.array(customizedFormValue),
+    customizedFormValues: z.array(customizedFormValue).optional(),
     privileges: z.array(z.enum(["reference", "vendor", "prospect"])),
   })
   .transform(({ privileges, ...rest }) => ({

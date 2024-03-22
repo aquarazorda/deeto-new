@@ -31,5 +31,5 @@ function Index() {
       { isReference: undefined, isProspect: undefined, isVendor: undefined },
       () => <Spinner />,
     )
-    .otherwise(() => "Not implemented yet.");
+    .otherwise(() => <Navigate to="/login-with-email" />);
 }
