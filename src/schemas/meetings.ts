@@ -9,23 +9,26 @@ export const meetingStagesSchema = z.object({
 });
 
 export const meetingSchema = z.object({
-  meetingID: z.string().uuid(),
-  opportunityID: z.string().uuid().describe("assigned to an opportunity"),
-  initiatorID: z.string().uuid().describe("this is an AccountVendor ID"),
-  prospectContactID: z.string().uuid(),
-  referenceContactID: z.string().uuid(),
-  referenceAccountID: z.string().uuid(),
-  aggregateStage: z.enum([
-    "invited",
-    "accepted",
-    "scheduled",
-    "live",
-    "stuck",
-    "completed",
-  ]),
-  emailActivity: z.array(emailActivitySchema),
-  stages: z.array(meetingStagesSchema),
-  scheduledTimeSlot: z.array(scheduledTimeslotSchema),
+  meetingID: z.string().uuid().optional(),
+  opportunityID: z
+    .string()
+    .uuid()
+    .optional()
+    .describe("assigned to an opportunity"),
+  initiatorID: z
+    .string()
+    .uuid()
+    .optional()
+    .describe("this is an AccountVendor ID"),
+  prospectContactID: z.string().uuid().optional(),
+  referenceContactID: z.string().uuid().optional(),
+  referenceAccountID: z.string().uuid().optional(),
+  aggregateStage: z
+    .enum(["invited", "accepted", "scheduled", "live", "stuck", "completed"])
+    .optional(),
+  emailActivity: z.array(emailActivitySchema).optional(),
+  stages: z.array(meetingStagesSchema).optional(),
+  scheduledTimeSlot: z.array(scheduledTimeslotSchema).optional(),
   callStatistics: z.array(callStatisticsSchema),
   // feedback: z.array(feedbackSchema),
 });
@@ -38,6 +41,8 @@ export const meetingStatusSchema = z.object({
     "live",
     "rescheduled",
     "completed",
+    "inProgress",
+    "stuck",
   ]),
   meetings: z.array(meetingSchema),
 });

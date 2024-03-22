@@ -15,10 +15,17 @@ export const customizedFormFieldOptionsSchema = z.object({
   isVisible: z.boolean(),
 });
 
+const formTypeSchema = z.enum([
+  "accountContactDetails",
+  "vendorContactDetails",
+  "Q&A",
+  "referenceUserstoryKPIs",
+]);
+
 const customizedFormFieldSchema = z.object({
   customizedFormFieldId: z.string(),
   vendorId: z.string(),
-  formType: z.enum(["accountContactDetails", "vendorContactDetails"]),
+  formType: formTypeSchema,
   fieldName: z.string(),
   fieldLabel: z.string(),
   fieldType: z.enum([
@@ -41,6 +48,7 @@ const customizedFormFieldSchema = z.object({
     "time",
     "file",
     "boolean",
+    "currencyDollar",
   ]),
   fieldValidation: z.enum([
     "name",
@@ -50,9 +58,10 @@ const customizedFormFieldSchema = z.object({
     "time",
     "file",
     "boolean",
+    "none",
   ]),
   isMandatory: z.boolean(),
-  appearanceOrder: z.number(),
+  appearanceOrder: z.number().nullable(),
   optionsOrderBy: z.enum([
     "number",
     "captionAlphabetical",
@@ -62,18 +71,18 @@ const customizedFormFieldSchema = z.object({
   isUsedInSmallTabInfo: z.boolean(),
   matchingAlgorithm: z.enum(["none", "points", "disqulifier"]),
   isPubliclyVisible: z.boolean(),
-  vendor: vendorSchema,
-  fieldOptions: z.array(customizedFormFieldOptionsSchema),
+  vendor: vendorSchema.optional(),
+  fieldOptions: z.array(customizedFormFieldOptionsSchema).optional(),
 });
 
 export const customizedFormValueSchema = z.object({
-  customizedFormValueID: z.string().uuid(),
-  formType: z.enum(["accountContactDetails", "vendorContactDetails"]),
+  customizedFormValueID: z.string().uuid().optional(),
+  formType: formTypeSchema,
   customizedFormFieldId: z.string().uuid(),
   fieldName: z.string(),
-  fieldLabe: z.string(),
-  valueCaption: z.string(),
+  fieldLabel: z.string(),
+  valueCaption: z.string().nullable(),
   value: z.string(),
-  updatedBy: z.string().uuid(),
-  customizedFormField: customizedFormFieldSchema,
+  updatedBy: z.string().uuid().nullable(),
+  customizedFormField: customizedFormFieldSchema.optional(),
 });

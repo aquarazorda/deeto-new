@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { accountContactSchema } from "./accountContact";
 
 export const callLogSchema = z.object({
   callLogID: z.string().uuid(),
@@ -26,5 +25,5 @@ export const feedbackSchema = z.object({
   helpful: z.string().describe("true"),
   followupAdditionalInformation: z.string().describe("true"),
   comment: z.string(),
-  accountContacts: accountContactSchema,
+  // accountContacts: accountContactSchema,
 });

@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { accountContactSchema } from "./accountContact";
-import { customizedFormValue } from "./customized-form";
+import { customizedFormValueSchema } from "./customized-form";
 
 const meSchema = z
   .object({
@@ -8,7 +8,7 @@ const meSchema = z
     avatar: z.object({
       url: z.string().nullable().optional(),
     }),
-    customizedFormValues: z.array(customizedFormValue).optional(),
+    customizedFormValues: z.array(customizedFormValueSchema).optional(),
     privileges: z.array(z.enum(["reference", "vendor", "prospect"])),
   })
   .transform(({ privileges, ...rest }) => ({

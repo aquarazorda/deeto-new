@@ -20,27 +20,29 @@ export const infoTabSchema = z.object({
 });
 
 export const accountContactSchema = z.object({
-  accountContactID: z.string().uuid(),
+  accountContactID: z.string().uuid().optional(),
   title: z.string().describe("CTO of Zoom"),
   publicNote: z
     .string()
+    .nullable()
     .describe("We selected Shayne as a reference because..."),
   selectedReviewQuote: z
     .string()
+    .nullable()
     .describe("I love working with LabGroup they were punctual with execution"),
-  often: z.string().describe("6months"),
-  linkedInProfile: z.string(),
+  often: z.string().nullable().describe("6months"),
+  linkedInProfile: z.string().nullable(),
   frequency: z.number(),
   redeemableAmount: z.number(),
-  infoTab: z.array(infoTabSchema),
-  redemption: z.array(redemptionSchema),
+  infoTab: z.array(infoTabSchema).optional(),
+  redemption: z.array(redemptionSchema).optional(),
   zoomVisits: z.any(),
-  callLog: z.array(callLogSchema),
-  opportunities: z.array(opportunitySchema),
-  recommendedReferences: z.array(recommendedReferenceSchema),
+  callLog: z.array(callLogSchema).optional(),
+  opportunities: z.array(opportunitySchema).optional(),
+  recommendedReferences: z.array(recommendedReferenceSchema).optional(),
   meetingFeedbacks: z.any(),
-  referenceMeetings: z.array(meetingSchema),
-  prospectMeetings: z.array(meetingSchema),
+  referenceMeetings: z.array(meetingSchema).optional(),
+  prospectMeetings: z.array(meetingSchema).optional(),
   MeetingAvailabilities: z
     .any()
     .describe("TODO - Add MeetingAvailabilities definition"),
@@ -48,12 +50,13 @@ export const accountContactSchema = z.object({
   adminID: z
     .string()
     .uuid()
+    .optional()
     .describe(
       "The vendorContactID who either added the reference or currently own the relationship",
     ),
-  admin: vendorContactSchema,
-  accountID: z.string().uuid(),
+  admin: vendorContactSchema.optional(),
+  accountID: z.string().uuid().optional(),
   account: accountSchema,
   customizedFormValues: z.array(customizedFormValueSchema),
-  notifications: z.array(notificationSchema),
+  notifications: z.array(notificationSchema).optional(),
 });
