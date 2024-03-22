@@ -4,6 +4,7 @@ import { Navigate, createLazyFileRoute } from "@tanstack/react-router";
 import { match } from "ts-pattern";
 import { useMemo } from "react";
 import { useShallow } from "zustand/react/shallow";
+import { Spinner } from "@/components/loaders/spinner";
 
 export const Route = createLazyFileRoute("/")({
   component: Index,
@@ -26,5 +27,9 @@ function Index() {
 
   return match(privileges)
     .with({ isReference: true }, () => <Navigate to="/reference" />)
+    .with(
+      { isReference: undefined, isProspect: undefined, isVendor: undefined },
+      () => <Spinner />,
+    )
     .otherwise(() => "Not implemented yet.");
 }

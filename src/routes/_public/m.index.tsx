@@ -5,18 +5,20 @@ import { Spinner } from "@/components/loaders/spinner";
 import { useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { api } from "@/lib/requests";
-import { setCookie } from "@/lib/cookie";
-import { fetchUser } from "@/lib/states/user";
+import { setTokensAndGetUser } from "@/lib/states/user";
+import { P, match } from "ts-pattern";
+import { authResponseSchema } from "@/schemas/auth";
 
-const shortenLinkResponseSchema = z.object({
-  accessToken: z.string(),
-  refreshToken: z.string(),
-  destination: z.string(),
-  withoutAuthenticatedUser: z.boolean(),
-});
+const shortenLinkResponseSchema = z.union([
+  authResponseSchema,
+  z.object({
+    email: z.string(),
+    partialMagicLink: z.boolean(),
+  }),
+]);
 
 const MagicRoute = () => {
-  const search = Route.useSearch();
+  const { l } = Route.useSearch();
   const navigate = useNavigate();
 
   const { executeRecaptcha } = useGoogleReCaptcha();
@@ -28,34 +30,43 @@ const MagicRoute = () => {
         "MAGIC_SHORTEN_LINK_AUTH",
         shortenLinkResponseSchema,
         {
-          shortenLinkId: search.l,
+          shortenLinkId: l,
           captchaToken,
         },
       );
 
-      if (res.ok) {
-        navigate({ to: res.val.destination });
+      match(res)
+        .with({ ok: true, val: { partialMagicLink: true } }, ({ val }) => {
+          navigate({ to: "/partial-auth", search: { email: val.email, l } });
+        })
+        .with(
+          {
+            ok: true,
+            val: { accessToken: P.string },
+          },
+          async ({ val }) => {
+            await setTokensAndGetUser(val);
 
-        setCookie("accessToken", res.val.accessToken, 172800, true);
-        setCookie("refreshToken", res.val.refreshToken, 604800, true);
-        await fetchUser();
-      }
+            navigate({ to: val.destination });
+          },
+        );
 
       return res;
     },
   });
 
   useEffect(() => {
-    if (!executeRecaptcha || !search.l) return;
+    if (!executeRecaptcha || !l) return;
 
     auth();
-  }, [executeRecaptcha, search]);
+  }, [executeRecaptcha, l]);
 
   return <Spinner />;
 };
 
 const magicLinkSearchSchema = z.object({
   l: z.string().uuid().optional(),
+  action: z.string().optional(),
 });
 
 export const Route = createFileRoute("/_public/m/")({

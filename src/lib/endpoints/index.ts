@@ -3,8 +3,8 @@ export const endpoints = {
   MAGIC_SHORTEN_LINK_AUTH: "v1/magicLink/useShorten",
   PRIMARY_REGISTRATION: "v1/auth/registerPasswordless",
   LOGIN_WITH_MAIL_PATH: "v1/auth/login",
-  LOGIN_PARTIAL_PATH: "/v1/magicLink/usePartial",
-  RESEND_PARTIAL_PATH: "/v1/magicLink/resendCode",
+  LOGIN_PARTIAL_PATH: "v1/magicLink/usePartial",
+  RESEND_PARTIAL_PATH: "v1/magicLink/resendCode",
   REFRESH_TOKEN: "v1/auth/refreshToken",
   SEND_NEW_MAGIC_LINK_PATH: "v1/magicLink/useShortenToRelogin",
 
@@ -18,7 +18,7 @@ export const endpoints = {
   LATEST_USER_MEETINGS: "v2/me/meetings/latest",
 
   DASHBOARD_PATH: "v2/me/dashboard",
-  STATISTIC_PATH: "/v2/me/statisticsUrl",
+  STATISTIC_PATH: "v2/me/statisticsUrl",
   STATISTIC_DASHBOARD: "v2/me/dashboard/statistic",
 
   SCHEDULING_PATH: "v2/me/scheduling",
@@ -49,7 +49,7 @@ export const endpoints = {
     `v2/authenticatedUser/${authenticatedUserID}/changeUserStatus/confirmed`,
   VENDOR_CONTACTS_USER_DELETE: (authenticatedUserID: string | number) =>
     `v2/authenticatedUser/${authenticatedUserID}/changeUserStatus/deleted`,
-  VENDOR_BANNER_VIDEO: "/v2/vendor/bannerVideo",
+  VENDOR_BANNER_VIDEO: "v2/vendor/bannerVideo",
 
   REFERENCE_INVITE_PATH: "v2/reference/create",
   PROSPECT_INVITE_PATH: "v2/prospect/create",
@@ -153,14 +153,14 @@ export const endpoints = {
     `v2/accountContacts/${accountContactId}/opportunities`,
 
   CUSTOMIZED_FORM_PATH: "v2/customizedForms",
-  ORDERED_CUSTOMIZED_FORM_PATH: "/v2/customizedForms/reorder",
+  ORDERED_CUSTOMIZED_FORM_PATH: "v2/customizedForms/reorder",
   CUSTOMIZED_FORM_COMPUTED: (referenceField: string, value: string) =>
     `v2/customizedForms/computed?referenceField=${referenceField}&value=${value}`,
 
   RATE_CONTRIBUTION:
-    "/v2/selectedReferenceContributions/:selectedReferenceContributionId/rateContribution",
+    "v2/selectedReferenceContributions/:selectedReferenceContributionId/rateContribution",
   VIEW_CONTRIBUTION:
-    "/v2/selectedReferenceContributions/:selectedReferenceContributionId/viewContribution",
+    "v2/selectedReferenceContributions/:selectedReferenceContributionId/viewContribution",
 
   REFERRAL_PATH: "v2/referrals",
   REFERRAL_PROFILE_PATH: "v2/referrals/:id",
@@ -168,7 +168,7 @@ export const endpoints = {
   DELETE_REFERRAL_PATH: "v2/referrals/:id/delete",
   REFERRAL_CHANGE_STATUS_PATH: "v2/referrals/:id/change-status",
   REFERRAL_CHANGE_REJECTION_REASON_PATH: "v2/referrals/:id/reject",
-  REFERRAL_PRE_VALIDATE_EMAIL_PATH: "/v2/referrals/prevalidate-email",
+  REFERRAL_PRE_VALIDATE_EMAIL_PATH: "v2/referrals/prevalidate-email",
 
   REFERRAL_PROGRAMS_PATH: "v2/referralPrograms",
   REFERRAL_PROGRAM_PROFILE_PATH: "v2/referralPrograms/:id",
@@ -176,24 +176,24 @@ export const endpoints = {
     "v2/referralPrograms/:programId/setAsDefault",
   REFERRAL_PROGRAMS_TEMPLATES_PATH: "v2/referralProgramTemplates",
 
-  CONTRIBUTIONS_ALL_PATH: "/v2/contributions/search",
+  CONTRIBUTIONS_ALL_PATH: "v2/contributions/search",
   CONTRIBUTIONS_CHANGE_VENDOR_PUBLISH_POLICY:
-    "/v2/contributions/{contributionId}/change-vendor-publish-policy",
-  CONTRIBUTIONS_REQUEST_PATH: "/v2/contributions/request",
+    "v2/contributions/{contributionId}/change-vendor-publish-policy",
+  CONTRIBUTIONS_REQUEST_PATH: "v2/contributions/request",
   CONTRIBUTIONS_CREATE_DRAFT_PATH: (type: string) =>
     `/v2/contribution/draft/${type}`,
   SET_CONTRIBUTION_STYLES_REQUEST_PATH:
-    "/v2/contributions/{contributionId}/styleAndColor",
+    "v2/contributions/{contributionId}/styleAndColor",
   TOGGLE_CONTRIBUTION_PERMISSION_PATH: (contributionId: string) =>
     `/v2/contributions/${contributionId}/togglePermission`,
 
-  SELF_REGISTRATION_DETAILS_PATH: "/anonymous/url/:url",
-  SELF_REGISTRATION_PATH: "/anonymous/vendors/:vendorId/reference",
-  SELF_REGISTRATION_DROPDOWN_PATH: "/anonymous/dropdownLists/{dropdownID}",
+  SELF_REGISTRATION_DETAILS_PATH: "anonymous/url/:url",
+  SELF_REGISTRATION_PATH: "anonymous/vendors/:vendorId/reference",
+  SELF_REGISTRATION_DROPDOWN_PATH: "anonymous/dropdownLists/{dropdownID}",
 
   CONVERT_TO_SELF_REGISTRATION: "v2/me/convertToSelfRegister",
 
   FIELD_MAPPING: "v2/crm/:crm_provider/mappingSettings",
   FIELD_MAPPING_SOURCES: "v2/crm/:crm_provider/mappingSources",
-  FIELD_MAPPING_SOURCE_FIELDS: "/v2/crm/:crm_provider/mappingSourceFields",
+  FIELD_MAPPING_SOURCE_FIELDS: "v2/crm/:crm_provider/mappingSourceFields",
 } as const;

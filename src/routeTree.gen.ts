@@ -13,6 +13,7 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as PublicPartialAuthRouteImport } from './routes/_public/partial-auth.route'
 import { Route as PublicMIndexImport } from './routes/_public/m.index'
 
 // Create Virtual Routes
@@ -56,6 +57,11 @@ const PublicLoginWithEmailLazyRoute = PublicLoginWithEmailLazyImport.update({
   import('./routes/_public/login-with-email.lazy').then((d) => d.Route),
 )
 
+const PublicPartialAuthRouteRoute = PublicPartialAuthRouteImport.update({
+  path: '/partial-auth',
+  getParentRoute: () => PublicLazyRoute,
+} as any)
+
 const PublicMIndexRoute = PublicMIndexImport.update({
   path: '/m/',
   getParentRoute: () => PublicLazyRoute,
@@ -77,6 +83,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReferenceLazyImport
       parentRoute: typeof rootRoute
     }
+    '/_public/partial-auth': {
+      preLoaderRoute: typeof PublicPartialAuthRouteImport
+      parentRoute: typeof PublicLazyImport
+    }
     '/_public/login-with-email': {
       preLoaderRoute: typeof PublicLoginWithEmailLazyImport
       parentRoute: typeof PublicLazyImport
@@ -97,6 +107,7 @@ declare module '@tanstack/react-router' {
 export const routeTree = rootRoute.addChildren([
   IndexLazyRoute,
   PublicLazyRoute.addChildren([
+    PublicPartialAuthRouteRoute,
     PublicLoginWithEmailLazyRoute,
     PublicMIndexRoute,
   ]),

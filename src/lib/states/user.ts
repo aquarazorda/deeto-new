@@ -2,8 +2,9 @@ import { create } from "zustand";
 import { api } from "../requests";
 import { z } from "zod";
 import { userSchema } from "@/schemas/user";
-import { getCookie } from "../cookie";
+import { getCookie, setCookie } from "../cookie";
 import { Err } from "ts-results";
+import { authResponseSchema } from "@/schemas/auth";
 
 type UserState = Partial<z.infer<typeof userSchema>>;
 
@@ -24,4 +25,13 @@ export const fetchUser = async () => {
 
   useUser.setState({});
   return res;
+};
+
+export const setTokensAndGetUser = async ({
+  accessToken,
+  refreshToken,
+}: z.infer<typeof authResponseSchema>) => {
+  setCookie("accessToken", accessToken, 172800, true);
+  setCookie("refreshToken", refreshToken, 604800, true);
+  await fetchUser();
 };

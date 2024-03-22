@@ -2,16 +2,16 @@ import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import HttpApi, { HttpBackendOptions } from "i18next-http-backend";
 
-type LanguageDict = typeof import("../../../public/lang/en.json");
+// type LanguageDict = typeof import("../../../public/lang/en.json");
 
-declare module "i18next" {
-  interface CustomTypeOptions {
-    defaultNS: "en";
-    resources: {
-      en: LanguageDict;
-    };
-  }
-}
+// declare module "i18next" {
+//   interface CustomTypeOptions {
+//     defaultNS: "en";
+//     resources: {
+//       en: LanguageDict;
+//     };
+//   }
+// }
 
 i18n
   .use(initReactI18next)

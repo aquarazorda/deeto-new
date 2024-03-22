@@ -2,7 +2,6 @@ import { createLazyFileRoute } from "@tanstack/react-router";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Card, CardContent } from "@/components/ui/card";
 import { z } from "zod";
 import {
   Form,
@@ -26,7 +25,7 @@ export const Route = createLazyFileRoute("/_public/login-with-email")({
   component: EmailLogin,
 });
 
-function EmailLoginInner() {
+function EmailLogin() {
   const { executeRecaptcha } = useGoogleReCaptcha();
   const { t } = useTranslation();
 
@@ -74,10 +73,7 @@ function EmailLoginInner() {
             })}
           </p>
           <p>
-            {t("no_email")}{" "}
-            <Button variant="ghost" onClick={reset}>
-              {t("click_here")}
-            </Button>
+            {t("no_email")} <Button onClick={reset}>{t("click_here")}</Button>
           </p>
         </div>
       </div>
@@ -114,15 +110,5 @@ function EmailLoginInner() {
         </div>
       </form>
     </Form>
-  );
-}
-
-function EmailLogin() {
-  return (
-    <Card className="w-[700px] rounded-tl-none">
-      <CardContent>
-        <EmailLoginInner />
-      </CardContent>
-    </Card>
   );
 }
