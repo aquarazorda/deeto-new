@@ -1,48 +1,55 @@
 import { z } from "zod";
+import { accountSchema } from "./account";
+import { authenticatedUserSchema } from "./authenticated-user";
 import { emailActivitySchema } from "./emails";
-import { scheduledTimeslotSchema } from "./timeslots";
 import { callStatisticsSchema } from "./statistics";
+import { scheduledTimeslotSchema } from "./timeslots";
+
+export const meetingStageStatusSchema = z.enum([
+  "completed",
+  "inProgress",
+  "scheduled",
+  "stuck",
+]);
 
 export const meetingStagesSchema = z.object({
   label: z.string().describe("Invited"),
-  status: z.enum(["completed", "inProgress", "notStarted", "error"]),
+  status: meetingStageStatusSchema,
 });
 
 export const meetingSchema = z.object({
-  meetingID: z.string().uuid().optional(),
-  opportunityID: z
+  meetingId: z.string().uuid(),
+  opportunityId: z
     .string()
     .uuid()
     .optional()
     .describe("assigned to an opportunity"),
-  initiatorID: z
+  initiatorId: z
     .string()
     .uuid()
     .optional()
     .describe("this is an AccountVendor ID"),
-  prospectContactID: z.string().uuid().optional(),
-  referenceContactID: z.string().uuid().optional(),
-  referenceAccountID: z.string().uuid().optional(),
-  aggregateStage: z
-    .enum(["invited", "accepted", "scheduled", "live", "stuck", "completed"])
-    .optional(),
+  prospectContactId: z.string().uuid().optional(),
+  referenceContactId: z.string().uuid().optional(),
+  referenceAccountId: z.string().uuid().optional(),
+  vendorAggregatedStage: meetingStageStatusSchema,
   emailActivity: z.array(emailActivitySchema).optional(),
-  stages: z.array(meetingStagesSchema).optional(),
-  scheduledTimeSlot: z.array(scheduledTimeslotSchema).optional(),
-  callStatistics: z.array(callStatisticsSchema),
+  stage: z.array(meetingStagesSchema),
+  scheduledTimeSlots: z.array(scheduledTimeslotSchema).optional(),
+  callStatistics: z.array(callStatisticsSchema).optional(),
+  prospectContact: z.object({
+    title: z.string(),
+    account: accountSchema,
+    tags: z.array(z.string()),
+    authenticatedUser: authenticatedUserSchema,
+  }),
+
   // feedback: z.array(feedbackSchema),
 });
 
 export const meetingStatusSchema = z.object({
-  meetingStatus: z.enum([
-    "invited",
-    "accepted",
-    "scheduled",
-    "live",
-    "rescheduled",
-    "completed",
-    "inProgress",
-    "stuck",
-  ]),
+  queueOrder: z.number(),
+  queueLabel: z.string(),
+  meetingStatus: meetingStageStatusSchema,
   meetings: z.array(meetingSchema),
 });

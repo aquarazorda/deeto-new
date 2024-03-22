@@ -36,7 +36,7 @@ export default function LeftMenuLayout({ children, items }: Props) {
         ))}
       </div>
       <div className="relative h-full flex-grow overflow-hidden bg-white">
-        <div className="flex h-full w-full flex-col">{children}</div>
+        <div className="flex h-full w-full flex-col p-6">{children}</div>
       </div>
     </div>
   );

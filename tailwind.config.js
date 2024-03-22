@@ -26,14 +26,16 @@ module.exports = {
       grey: "#D3D3D3",
       primary: {
         DEFAULT: "#481453",
+        dark: "#2e1334",
         foreground: "#FFFFFF",
       },
       "primary-yellow": "#FFC400",
       "primary-blue": "#0F8CFF",
+      "primary-orange": "#ffe5d2",
       "secondary-green": "#00BA55",
       "secondary-orange": "#FF7D1F",
       "secondary-pink": "#FF92B9",
-      "secondary-pose": "#E8B6F2",
+      "secondary-rose": "#E8B6F2",
       "secondary-red": "#FF5A5F",
       "secondary-blue": "#00C2E9",
       "secondary-purple": "#80009C",
@@ -98,9 +100,6 @@ module.exports = {
         },
       },
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
         100: "100px",
       },
       keyframes: {

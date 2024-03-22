@@ -63,7 +63,7 @@ function EmailLogin() {
 
   if (data?.ok) {
     return (
-      <div className="flex gap-12 space-y-6 p-12">
+      <div className="flex gap-12 space-y-6">
         <img src="/assets/login-email.svg" />
         <div className="flex flex-col gap-2 text-xl">
           <h2 className="text-4xl">{t("registration.heading.check_email")}</h2>
@@ -82,7 +82,7 @@ function EmailLogin() {
 
   return (
     <Form {...form}>
-      <form className="space-y-6 p-12" onSubmit={form.handleSubmit(onSubmit)}>
+      <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
         <h1 className="font-inter text-4xl font-medium text-primary">
           {t("registration.heading.what_is_your_email")}
         </h1>

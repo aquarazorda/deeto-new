@@ -1,14 +1,14 @@
 import { z } from "zod";
+import { accountSchema } from "./account";
 import { customizedFormValueSchema } from "./customized-form";
 import { meetingSchema } from "./meetings";
+import { notificationSchema } from "./notification";
+import { opportunitySchema, recommendedReferenceSchema } from "./references";
 import { callLogSchema } from "./statistics";
 import { vendorContactSchema } from "./vendor";
-import { notificationSchema } from "./notification";
-import { accountSchema } from "./account";
-import { opportunitySchema, recommendedReferenceSchema } from "./references";
 
 export const redemptionSchema = z.object({
-  redemptionID: z.string().uuid(),
+  redemptionId: z.string().uuid(),
   amount: z.number(),
   timestamp: z.string().datetime(),
   channel: z.string().describe("Amazon"),
@@ -20,7 +20,7 @@ export const infoTabSchema = z.object({
 });
 
 export const accountContactSchema = z.object({
-  accountContactID: z.string().uuid().optional(),
+  accountContactId: z.string().uuid().optional(),
   title: z.string().describe("CTO of Zoom"),
   publicNote: z
     .string()
@@ -43,9 +43,6 @@ export const accountContactSchema = z.object({
   meetingFeedbacks: z.any(),
   referenceMeetings: z.array(meetingSchema).optional(),
   prospectMeetings: z.array(meetingSchema).optional(),
-  MeetingAvailabilities: z
-    .any()
-    .describe("TODO - Add MeetingAvailabilities definition"),
   authenticatedUserId: z.string().uuid(),
   adminID: z
     .string()

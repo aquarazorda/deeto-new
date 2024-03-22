@@ -13,9 +13,9 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as ReferenceDashboardRouteImport } from './routes/_reference/dashboard.route'
 import { Route as PublicPartialAuthRouteImport } from './routes/_public/partial-auth.route'
 import { Route as PublicMIndexImport } from './routes/_public/m.index'
+import { Route as ReferenceDashboardIndexRouteImport } from './routes/_reference/dashboard/index.route'
 
 // Create Virtual Routes
 
@@ -50,11 +50,6 @@ const PublicLoginWithEmailLazyRoute = PublicLoginWithEmailLazyImport.update({
   import('./routes/_public/login-with-email.lazy').then((d) => d.Route),
 )
 
-const ReferenceDashboardRouteRoute = ReferenceDashboardRouteImport.update({
-  path: '/dashboard',
-  getParentRoute: () => ReferenceLazyRoute,
-} as any)
-
 const PublicPartialAuthRouteRoute = PublicPartialAuthRouteImport.update({
   path: '/partial-auth',
   getParentRoute: () => PublicLazyRoute,
@@ -64,6 +59,12 @@ const PublicMIndexRoute = PublicMIndexImport.update({
   path: '/m/',
   getParentRoute: () => PublicLazyRoute,
 } as any)
+
+const ReferenceDashboardIndexRouteRoute =
+  ReferenceDashboardIndexRouteImport.update({
+    path: '/dashboard/',
+    getParentRoute: () => ReferenceLazyRoute,
+  } as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -85,13 +86,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicPartialAuthRouteImport
       parentRoute: typeof PublicLazyImport
     }
-    '/_reference/dashboard': {
-      preLoaderRoute: typeof ReferenceDashboardRouteImport
-      parentRoute: typeof ReferenceLazyImport
-    }
     '/_public/login-with-email': {
       preLoaderRoute: typeof PublicLoginWithEmailLazyImport
       parentRoute: typeof PublicLazyImport
+    }
+    '/_reference/dashboard/': {
+      preLoaderRoute: typeof ReferenceDashboardIndexRouteImport
+      parentRoute: typeof ReferenceLazyImport
     }
     '/_public/m/': {
       preLoaderRoute: typeof PublicMIndexImport
@@ -109,7 +110,7 @@ export const routeTree = rootRoute.addChildren([
     PublicLoginWithEmailLazyRoute,
     PublicMIndexRoute,
   ]),
-  ReferenceLazyRoute.addChildren([ReferenceDashboardRouteRoute]),
+  ReferenceLazyRoute.addChildren([ReferenceDashboardIndexRouteRoute]),
 ])
 
 /* prettier-ignore-end */

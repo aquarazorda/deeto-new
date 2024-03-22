@@ -6,16 +6,16 @@ export const avatarSchema = z.object({
 });
 
 export const authenticatedUserSchema = z.object({
-  authenticatedUserID: z.string().uuid(),
-  username: z.string(),
+  authenticatedUserId: z.string().uuid(),
+  username: z.string().nullable(),
   firstName: z.string(),
   lastName: z.string(),
   email: z.string().email(),
   userStatus: z
     .enum(["confirmed", "pending", "locked"])
     .describe("User Status"),
-  privileges: z.array(z.string().describe("reference")),
-  profilePicture: avatarSchema,
-  redeemableBalance: z.number(),
+  privileges: z.array(z.string().describe("reference")).optional(),
+  profilePicture: avatarSchema.optional(),
+  redeemableBalance: z.number().optional(),
   preferredTimezone: z.string().describe("UTC+5"),
 });

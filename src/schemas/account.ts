@@ -12,5 +12,4 @@ export const accountSchema = z.object({
     .describe("https://www.linkedin.com/in/user/"),
   vendorId: z.string().describe("123e4567-e89b-12d3-a456-426614174000"),
   opportunities: z.array(opportunitySchema).optional(),
-  meetings: z.array(meetingSchema).optional(),
 });
