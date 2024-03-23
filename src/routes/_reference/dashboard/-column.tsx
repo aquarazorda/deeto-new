@@ -1,8 +1,5 @@
 import { cn } from "@/lib/utils";
-import {
-  meetingStageStatusSchema,
-  meetingStatusSchema,
-} from "@/schemas/meetings";
+import { meetingStatusSchema } from "@/schemas/meetings";
 import { z } from "zod";
 import { MeetingCard } from "./-meeting-card";
 import { Card, CardDescription } from "@/components/ui/card";
@@ -12,6 +9,11 @@ import { useShallow } from "zustand/react/shallow";
 import Avatar from "@/components/deeto/avatar";
 import DeetoLogo from "@/assets/icons/deeto-logo.svg?react";
 import { Skeleton } from "@/components/ui/skeleton";
+
+type MeetingStatus = Exclude<
+  z.infer<typeof meetingStatusSchema>["meetingStatus"],
+  "error"
+>;
 
 export const dashboardColumns = {
   inProgress: {
@@ -79,7 +81,7 @@ const EmptyCard = ({
   meetingStatus,
 }: {
   type: "dashboard" | "prospectDashboard";
-  meetingStatus: z.infer<typeof meetingStatusSchema>["meetingStatus"];
+  meetingStatus: MeetingStatus;
 }) => {
   const { t } = useTranslation();
   const isVendor = useUser(useShallow((state) => state.me.isVendor));
@@ -112,6 +114,7 @@ export const DashboardColumn = ({
   type,
 }: z.infer<typeof meetingStatusSchema> & {
   type: "dashboard" | "prospectDashboard";
+  meetingStatus: MeetingStatus;
 }) => {
   const { textColor, numberBg, bgColor } = dashboardColumns[meetingStatus];
 
@@ -143,7 +146,7 @@ export const DashboardColumn = ({
 export const DashboardColumnSkeleton = ({
   meetingStatus,
 }: {
-  meetingStatus: z.infer<typeof meetingStageStatusSchema>;
+  meetingStatus: MeetingStatus;
 }) => {
   const { numberBg, bgColor } = dashboardColumns[meetingStatus];
 

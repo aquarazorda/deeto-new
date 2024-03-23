@@ -25,6 +25,8 @@ export const VendorSettingsCurrency: FC<VendorSettingsCurrencyProps> = ({
   }
 
   if (!prefix && !postfix) {
-    return <CustomSvg icon={currencyPrefix || currencyPostfix} size={size} />;
+    return (
+      <CustomSvg icon={currencyPrefix ?? currencyPostfix ?? ""} size={size} />
+    );
   }
 };

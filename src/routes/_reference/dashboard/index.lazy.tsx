@@ -52,9 +52,18 @@ function ReferenceMainRoute() {
 
   return (
     <Wrapper>
-      {data.val.queuesMeetingStatuses.map((item) => (
-        <DashboardColumn type="dashboard" key={item.meetingStatus} {...item} />
-      ))}
+      {data.val.queuesMeetingStatuses.map((item) => {
+        if (item.meetingStatus === "error") return null;
+
+        return (
+          // @ts-expect-error
+          <DashboardColumn
+            type="dashboard"
+            key={item.meetingStatus}
+            {...item}
+          />
+        );
+      })}
     </Wrapper>
   );
 }
