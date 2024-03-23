@@ -96,9 +96,9 @@ const EmptyCard = ({
     >
       <CardDescription className="flex gap-4 p-4">
         <Avatar className="bg-white">
-          <DeetoLogo className="text-primary-dark size-12" />
+          <DeetoLogo className="size-12 text-primary-dark" />
         </Avatar>
-        <p className="text-primary-dark flex items-center font-semibold text-base leading-tight flex-1">
+        <p className="flex flex-1 items-center text-base font-semibold leading-tight text-primary-dark">
           {/* @ts-ignore  */}
           {t(infoTextTypes[selector][type][meetingStatus])}
         </p>
@@ -155,9 +155,9 @@ export const DashboardColumnSkeleton = ({
       <span className="flex items-center justify-between">
         <Skeleton className={cn("h-9 w-14", numberBg)} />
       </span>
-      {Array.from({ length: 8 }).map((_, index) => (
+      {Array.from({ length: 6 }).map((_, index) => (
         <Skeleton
-          className="w-full h-24 rounded-2xl rounded-tl-none"
+          className="h-24 w-full rounded-2xl rounded-tl-none"
           key={index}
         />
       ))}

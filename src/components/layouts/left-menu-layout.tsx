@@ -3,7 +3,7 @@ import { IconComponent } from "@/vite-env";
 import { Link } from "@tanstack/react-router";
 import { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
-import { ScrollArea } from "../ui/scroll-area";
+import { ScrollArea, ScrollBar } from "../ui/scroll-area";
 
 type Props = {
   children: ReactNode;
@@ -37,8 +37,12 @@ export default function LeftMenuLayout({ children, items }: Props) {
           </Link>
         ))}
       </div>
-      <ScrollArea className="relative h-full flex-grow overflow-hidden bg-white">
-        <div className="flex h-full w-full flex-col p-6">{children}</div>
+      <ScrollArea
+        className="relative flex h-full w-full bg-white px-6"
+        orientation="vertical"
+      >
+        <div className="h-full w-full py-6">{children}</div>
+        <ScrollBar orientation="vertical" />
       </ScrollArea>
     </div>
   );

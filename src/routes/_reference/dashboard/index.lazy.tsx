@@ -22,15 +22,13 @@ function Wrapper({ children }: { children: ReactNode }) {
   const { t } = useTranslation();
 
   return (
-    <div className="relative flex flex-col gap-6 overflow-hidden">
+    <div className="relative flex h-full w-full flex-col gap-6">
       <PageTitle>{t("dashboard")}</PageTitle>
-      <ScrollArea className="h-[60vh] w-full">
-        <div>
-          <div className="grid h-[60vh] auto-cols-[minmax(22.5rem,_36.25rem)] grid-flow-col gap-2">
-            <Suspense fallback={<ReferenceDashboardPending />}>
-              {children}
-            </Suspense>
-          </div>
+      <ScrollArea className="flex h-full w-full flex-1">
+        <div className="grid h-full auto-cols-[minmax(22.5rem,_36.25rem)] grid-flow-col gap-2">
+          <Suspense fallback={<ReferenceDashboardPending />}>
+            {children}
+          </Suspense>
         </div>
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
