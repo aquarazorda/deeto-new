@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { useShallow } from "zustand/react/shallow";
 import { api } from "../requests";
 import { z } from "zod";
 import { userSchema } from "@/schemas/user";
@@ -81,6 +82,15 @@ export const fetchUser = async () => {
     refreshToken: getCookie("refreshToken"),
   });
 };
+
+export const usePrivileges = () =>
+  useUser(
+    useShallow((state) => ({
+      isVendor: state.me?.isVendor,
+      isProspect: state.me?.isProspect,
+      isReference: state.me?.isReference,
+    })),
+  );
 
 type Tokens = {
   accessToken: string;
