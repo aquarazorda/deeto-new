@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
-import { createFileRoute } from "@tanstack/react-router";
+import { createLazyFileRoute } from "@tanstack/react-router";
 
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { queryKeys } from "@/lib/query";
@@ -15,7 +15,7 @@ import { ReactNode, Suspense } from "react";
 import DashboardAnalytics, { DashboardAnalyticsSkeleton } from "./-analytics";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn, objectKeys } from "@/lib/utils";
-import { MeetingCardSkeleton } from "./-meeting-card";
+import { useSuspenseQuery } from "@tanstack/react-query";
 
 function Wrapper({ children }: { children: ReactNode }) {
   const { t } = useTranslation();
@@ -26,7 +26,9 @@ function Wrapper({ children }: { children: ReactNode }) {
       <ScrollArea className="h-[60vh] w-full">
         <div>
           <div className="grid h-[60vh] auto-cols-[minmax(22.5rem,_36.25rem)] grid-flow-col gap-2">
-            {children}
+            <Suspense fallback={<ReferenceDashboardPending />}>
+              {children}
+            </Suspense>
           </div>
         </div>
         <ScrollBar orientation="horizontal" />
@@ -39,7 +41,10 @@ function Wrapper({ children }: { children: ReactNode }) {
 }
 
 function ReferenceMainRoute() {
-  const data = Route.useLoaderData();
+  const { data } = useSuspenseQuery({
+    queryKey: [queryKeys.REFERENCE_DASHBOARD],
+    queryFn: () => api.get("DASHBOARD_PATH", dashboardSchema),
+  });
 
   if (!data.ok) {
     return <div>Failed to load data</div>;
@@ -77,13 +82,7 @@ const dashboardSchema = z.object({
   queuesMeetingStatuses: z.array(meetingStatusSchema),
 });
 
-export const Route = createFileRoute("/_reference/dashboard/")({
+export const Route = createLazyFileRoute("/_reference/dashboard/")({
   component: ReferenceMainRoute,
-  loader: ({ context: { queryClient } }) =>
-    queryClient.ensureQueryData({
-      queryKey: [queryKeys.REFERENCE_DASHBOARD],
-      queryFn: () => api.get("DASHBOARD_PATH", dashboardSchema),
-    }),
-  pendingMs: 10,
   pendingComponent: ReferenceDashboardPending,
 });

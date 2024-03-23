@@ -9,7 +9,8 @@ import { P, match } from "ts-pattern";
 type UserState = z.infer<typeof userSchema>;
 
 export const useUser = create<UserState>(() => ({
-  me: {},
+  // @ts-ignore
+  me: {}, // @ts-ignore
   vendor: {},
 }));
 

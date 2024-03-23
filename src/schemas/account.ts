@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { meetingSchema } from "./meetings";
 import { opportunitySchema } from "./references";
 
 export const accountSchema = z.object({

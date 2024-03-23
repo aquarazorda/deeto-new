@@ -15,7 +15,6 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Route as rootRoute } from './routes/__root'
 import { Route as PublicPartialAuthRouteImport } from './routes/_public/partial-auth.route'
 import { Route as PublicMIndexImport } from './routes/_public/m.index'
-import { Route as ReferenceDashboardIndexRouteImport } from './routes/_reference/dashboard/index.route'
 
 // Create Virtual Routes
 
@@ -24,6 +23,9 @@ const PublicLazyImport = createFileRoute('/_public')()
 const IndexLazyImport = createFileRoute('/')()
 const PublicLoginWithEmailLazyImport = createFileRoute(
   '/_public/login-with-email',
+)()
+const ReferenceDashboardIndexLazyImport = createFileRoute(
+  '/_reference/dashboard/',
 )()
 
 // Create/Update Routes
@@ -55,16 +57,18 @@ const PublicPartialAuthRouteRoute = PublicPartialAuthRouteImport.update({
   getParentRoute: () => PublicLazyRoute,
 } as any)
 
+const ReferenceDashboardIndexLazyRoute =
+  ReferenceDashboardIndexLazyImport.update({
+    path: '/dashboard/',
+    getParentRoute: () => ReferenceLazyRoute,
+  } as any).lazy(() =>
+    import('./routes/_reference/dashboard/index.lazy').then((d) => d.Route),
+  )
+
 const PublicMIndexRoute = PublicMIndexImport.update({
   path: '/m/',
   getParentRoute: () => PublicLazyRoute,
 } as any)
-
-const ReferenceDashboardIndexRouteRoute =
-  ReferenceDashboardIndexRouteImport.update({
-    path: '/dashboard/',
-    getParentRoute: () => ReferenceLazyRoute,
-  } as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -90,13 +94,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicLoginWithEmailLazyImport
       parentRoute: typeof PublicLazyImport
     }
-    '/_reference/dashboard/': {
-      preLoaderRoute: typeof ReferenceDashboardIndexRouteImport
-      parentRoute: typeof ReferenceLazyImport
-    }
     '/_public/m/': {
       preLoaderRoute: typeof PublicMIndexImport
       parentRoute: typeof PublicLazyImport
+    }
+    '/_reference/dashboard/': {
+      preLoaderRoute: typeof ReferenceDashboardIndexLazyImport
+      parentRoute: typeof ReferenceLazyImport
     }
   }
 }
@@ -110,7 +114,7 @@ export const routeTree = rootRoute.addChildren([
     PublicLoginWithEmailLazyRoute,
     PublicMIndexRoute,
   ]),
-  ReferenceLazyRoute.addChildren([ReferenceDashboardIndexRouteRoute]),
+  ReferenceLazyRoute.addChildren([ReferenceDashboardIndexLazyRoute]),
 ])
 
 /* prettier-ignore-end */
