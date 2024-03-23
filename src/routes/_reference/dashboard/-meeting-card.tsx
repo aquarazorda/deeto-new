@@ -35,10 +35,7 @@ export const MeetingCard = ({
           </div>
           <Popover>
             <div>
-              <PopoverTrigger
-                className="items-start flex text-grey-500
-                  data-[state='open']:text-primary-yellow"
-              >
+              <PopoverTrigger className="items-start flex text-grey-500 data-[state='open']:text-primary-yellow">
                 <ThreeDots />
               </PopoverTrigger>
             </div>

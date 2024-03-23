@@ -10,6 +10,7 @@ export const meetingStageStatusSchema = z.enum([
   "inProgress",
   "scheduled",
   "stuck",
+  "viewed",
 ]);
 
 export const meetingStagesSchema = z.object({
