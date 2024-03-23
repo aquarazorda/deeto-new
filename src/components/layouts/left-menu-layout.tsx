@@ -37,10 +37,7 @@ export default function LeftMenuLayout({ children, items }: Props) {
           </Link>
         ))}
       </div>
-      <ScrollArea
-        className="relative flex h-full w-full bg-white px-6"
-        orientation="vertical"
-      >
+      <ScrollArea className="relative flex h-full w-full bg-white px-6">
         <div className="h-full w-full py-6">{children}</div>
         <ScrollBar orientation="vertical" />
       </ScrollArea>
