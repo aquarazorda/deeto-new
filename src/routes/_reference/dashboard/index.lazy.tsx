@@ -63,7 +63,7 @@ function ReferenceDashboardPending() {
   return (
     <Wrapper>
       {objectKeys(dashboardColumns).map((key) => (
-        <Skeleton className={cn(dashboardColumns[key].bgColor)}>
+        <Skeleton key={key} className={cn(dashboardColumns[key].bgColor)}>
           <DashboardColumnSkeleton meetingStatus={key} />
         </Skeleton>
       ))}

@@ -28,7 +28,7 @@ const crmIntegrationSchema = z.object({
 const vendorSchema = z.object({
   vendorId: z.string().uuid(),
   name: z.string(),
-  accountLevel: z.enum(["trial", "notActivated", "activated"]),
+  accountLevel: z.enum(["trial", "notActivated", "activated", "active"]),
   sendEmailOnBehalf: z.nullable(z.string()),
   activationDate: z.string().datetime(),
   defaultCreditAmountPerMeeting: z.number(),

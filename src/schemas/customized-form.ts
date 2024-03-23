@@ -37,6 +37,7 @@ const customizedFormFieldSchema = z.object({
     "time",
     "file",
     "boolean",
+    "hidden",
   ]),
   fieldRepresentation: z.enum([
     "text",

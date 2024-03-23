@@ -11,6 +11,7 @@ export const meetingStageStatusSchema = z.enum([
   "scheduled",
   "stuck",
   "viewed",
+  "error",
 ]);
 
 export const meetingStagesSchema = z.object({

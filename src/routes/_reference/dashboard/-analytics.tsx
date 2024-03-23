@@ -45,6 +45,7 @@ export default function DashboardAnalytics() {
     <Wrapper>
       {data.val.map(({ value, showCurrency, title, style }) => (
         <Card
+          key={title}
           className={cn(
             "text-secondary-blue min-w-48",
             style === "blue" && "bg-yellow-blue bg-cover bg-center text-white",
