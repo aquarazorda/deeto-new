@@ -1,32 +1,37 @@
-import { FC } from "react";
+import { FC, HTMLAttributes } from "react";
 import { CustomSvg } from "../custom-svg";
 import { useUser } from "@/lib/states/user";
+import { cn } from "@/lib/utils";
 
-interface VendorSettingsCurrencyProps {
-  prefix?: boolean;
-  postfix?: boolean;
-  size?: number;
+interface VendorSettingsCurrencyProps extends HTMLAttributes<HTMLDivElement> {
+  currencyProps?: HTMLAttributes<SVGElement>;
 }
 
 export const VendorSettingsCurrency: FC<VendorSettingsCurrencyProps> = ({
-  prefix = false,
-  postfix = false,
-  size = 32,
+  currencyProps,
+  children,
+  className,
+  ...props
 }) => {
   const { vendor } = useUser();
-  const { currencyPrefix, currencyPostfix } = vendor?.settings;
+  const { currencyPrefix, currencyPostfix, currencyFallback } =
+    vendor?.settings;
 
-  if (prefix && currencyPrefix) {
-    return <CustomSvg icon={currencyPrefix} size={size} />;
-  }
-
-  if (postfix && currencyPostfix) {
-    return <CustomSvg icon={currencyPostfix} size={size} />;
-  }
-
-  if (!prefix && !postfix) {
-    return (
-      <CustomSvg icon={currencyPrefix ?? currencyPostfix ?? ""} size={size} />
-    );
-  }
+  return (
+    <div className={cn("flex items-center gap-1", className)} {...props}>
+      {currencyPrefix && (
+        <CustomSvg
+          icon={currencyPrefix ?? currencyFallback}
+          {...currencyProps}
+        />
+      )}
+      {children}
+      {currencyPostfix && (
+        <CustomSvg icon={currencyPostfix} {...currencyProps} />
+      )}
+      {currencyFallback && !currencyPostfix && !currencyPrefix && (
+        <CustomSvg icon={currencyFallback} {...currencyProps} />
+      )}
+    </div>
+  );
 };

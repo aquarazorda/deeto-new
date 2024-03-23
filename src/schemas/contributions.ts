@@ -24,7 +24,13 @@ const metadataSchema = z.object({
 
 export const contributionSchema = z.object({
   contributionId: z.string().uuid(),
-  type: z.enum(["Review", "Quote", "QuestionsAndAnswers", "CaseStudy"]),
+  type: z.enum([
+    "Review",
+    "VideoTestimonial",
+    "Quote",
+    "QuestionsAndAnswers",
+    "CaseStudy",
+  ]),
   text: z.string(),
   previewText: z.string(),
   rewards: z.number(),

@@ -1,20 +1,15 @@
-import { FC } from "react";
+import { HTMLAttributes } from "react";
 
-interface CustomSvgProps {
+interface CustomSvgProps extends HTMLAttributes<SVGElement> {
   icon: string;
-  size: number;
 }
 
-export const CustomSvg: FC<CustomSvgProps> = ({ icon, size }) => {
+export const CustomSvg = ({ icon, ...props }: CustomSvgProps) => {
   if (icon.startsWith("https://")) {
     return (
-      <>
-        <span>&nbsp;</span>
-        <svg width={size} height={size}>
-          <image xlinkHref={icon} width={size} height={size} />
-        </svg>
-        <span>&nbsp;</span>
-      </>
+      <svg {...props}>
+        <image xlinkHref={icon} />
+      </svg>
     );
   }
 

@@ -26,14 +26,13 @@ export default function ReferenceActivitiesCard({
   );
 
   const getAddonStatus = (type: string) => addons.find((i) => i.type === type);
-  const isEven = (filteredAddons.length + mainAddons.length) % 2 === 0;
 
   return (
     <Card variant="shadow">
       <CardDescription className="font-bold text-primary-dark flex flex-col gap-4">
         <div className="flex justify-between items-center">
           <p className="text-xl">{t("activities")}</p>
-          <Button variant="outline" size="sm" disabled>
+          <Button variant="outline" size="sm">
             <Pen /> {t("edit")}
           </Button>
         </div>

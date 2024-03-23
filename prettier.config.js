@@ -6,7 +6,11 @@ const config = {
   singleQuote: false,
   useTabs: false,
   semi: true,
-  plugins: ["prettier-plugin-tailwindcss", "prettier-plugin-classnames"],
+  plugins: [
+    "prettier-plugin-tailwindcss",
+    "prettier-plugin-classnames",
+    "prettier-plugin-merge",
+  ],
 };
 
 export default config;

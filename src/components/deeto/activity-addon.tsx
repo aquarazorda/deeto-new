@@ -1,5 +1,5 @@
 import { addonSchema } from "@/schemas/contributions";
-import { Card, CardDescription } from "../ui/card";
+import { Card } from "../ui/card";
 import { z } from "zod";
 import { useTranslation } from "react-i18next";
 import { Skeleton } from "../ui/skeleton";
@@ -34,7 +34,7 @@ export default function ActivityAddon({
       <p
         className={cn(
           "text-semibold text-base",
-          item.status && "text-grey-400",
+          !item.status && "text-grey-400",
         )}
       >
         {item.label ?? t(`360_addon_${item.type}_title`)}

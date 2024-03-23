@@ -20,6 +20,7 @@ import {
 import { z } from "zod";
 import ReferenceActivitiesCard from "./-activites";
 import { onboardingStepSchema } from "@/schemas/onboarding";
+import ContributionCard from "@/components/deeto/contribution-card";
 
 type ContentState = Record<
   StepName,
@@ -78,6 +79,30 @@ const Component = () => {
       <Card variant="shadow">
         <CardDescription className="font-bold text-primary-dark flex flex-col gap-4">
           <p className="text-xl">{t("contributions")}</p>
+          <div className="grid grid-cols-2 gap-4">
+            <ContributionCard
+              contribution={contributions.videoTestimonial.contribution}
+              step={contributions.videoTestimonial.step}
+            />
+            <ContributionCard
+              contribution={contributions.userStory.contribution}
+              step={contributions.userStory.step}
+            />
+          </div>
+          <div className="grid grid-cols-3 gap-4">
+            <ContributionCard
+              contribution={contributions.quote.contribution}
+              step={contributions.quote.step}
+            />
+            <ContributionCard
+              contribution={contributions.review.contribution}
+              step={contributions.review.step}
+            />
+            <ContributionCard
+              contribution={contributions.questionsAndAnswers.contribution}
+              step={contributions.questionsAndAnswers.step}
+            />
+          </div>
         </CardDescription>
       </Card>
     </div>

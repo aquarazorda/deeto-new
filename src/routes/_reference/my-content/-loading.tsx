@@ -6,35 +6,7 @@ import { useTranslation } from "react-i18next";
 import Pen from "@/assets/icons/pen.svg?react";
 import { Button } from "@/components/ui/button";
 import { StoryAddonSkeleton } from "@/components/deeto/activity-addon";
-
-const ContentPending = ({
-  length,
-  withImage,
-}: {
-  length: number;
-  withImage?: boolean;
-}) => (
-  <div className="flex gap-2">
-    {Array.from({ length }).map((_, i) => (
-      <Card className="flex-1 p-4 rounded-xl" key={i}>
-        <CardDescription className="space-y-4">
-          <div className="flex justify-between items-center">
-            <Skeleton className="bg-primary-orange h-6 w-10" />
-            <Skeleton className="bg-primary h-6 w-10" />
-          </div>
-          <div className="flex gap-2 items-center">
-            {withImage && <Skeleton className="bg-tint-purple size-36" />}
-            <div className="w-full h-full flex-1 flex flex-col gap-2">
-              {Array.from({ length: 6 }).map((_, i) => (
-                <Skeleton key={i} className="w-full h-4 rounded-none" />
-              ))}
-            </div>
-          </div>
-        </CardDescription>
-      </Card>
-    ))}
-  </div>
-);
+import { ContributionSkeleton } from "@/components/deeto/contribution-card";
 
 export default function MyContentPending() {
   const { t } = useTranslation();
@@ -70,9 +42,8 @@ export default function MyContentPending() {
       <Card variant="shadow">
         <CardDescription className="font-bold text-primary-dark flex flex-col gap-4">
           <p className="text-xl">{t("contributions")}</p>
-
-          <ContentPending length={2} withImage />
-          <ContentPending length={3} />
+          <ContributionSkeleton length={2} withImage />
+          <ContributionSkeleton length={3} />
         </CardDescription>
       </Card>
     </div>
