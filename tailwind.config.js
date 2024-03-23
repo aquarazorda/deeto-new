@@ -57,6 +57,7 @@ module.exports = {
       "tint-popup-bg": "#481453B2",
       "tint-white": "#FFFFFFA6",
       "tint-bg": "#F9F8FA",
+      transparent: "transparent",
     },
     extend: {
       backgroundImage: {
@@ -101,6 +102,9 @@ module.exports = {
       },
       borderRadius: {
         100: "100px",
+      },
+      boxShadow: {
+        input: "rgba(59, 0, 135, 0.22) 0px 0px 0.625rem inset",
       },
       keyframes: {
         "accordion-down": {

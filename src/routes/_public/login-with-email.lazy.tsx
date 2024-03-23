@@ -92,7 +92,10 @@ function EmailLogin() {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input {...field} />
+                <Input
+                  placeholder={t("login_with_email.input_label")}
+                  {...field}
+                />
               </FormControl>
               <FormMessage>{data?.err ? data.val : null}</FormMessage>
             </FormItem>
