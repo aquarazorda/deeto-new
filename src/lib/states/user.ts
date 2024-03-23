@@ -6,9 +6,12 @@ import { getCookie, setCookie } from "../cookie";
 import { Err } from "ts-results";
 import { P, match } from "ts-pattern";
 
-type UserState = Partial<z.infer<typeof userSchema>>;
+type UserState = z.infer<typeof userSchema>;
 
-export const useUser = create<UserState>(() => ({}));
+export const useUser = create<UserState>(() => ({
+  me: {},
+  vendor: {},
+}));
 
 const refreshTokenSchema = z.object({
   accessToken: z.string(),

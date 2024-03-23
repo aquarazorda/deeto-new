@@ -3,6 +3,8 @@ import { z } from "zod";
 export const avatarSchema = z.object({
   type: z.enum(["default", "initial", "picture"]),
   url: z.string().url().optional(),
+  createdAt: z.string().datetime().optional(),
+  updatedAt: z.string().datetime().optional(),
 });
 
 export const authenticatedUserSchema = z.object({

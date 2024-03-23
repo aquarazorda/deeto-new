@@ -2,14 +2,14 @@ import { z } from "zod";
 import { authenticatedUserSchema } from "./authenticated-user";
 
 export const vendorContactSchema = z.object({
-  vendorContactsID: z.string().uuid(),
+  vendorContactsId: z.string().uuid(),
   title: z.string(),
   authenticatedUser: authenticatedUserSchema,
   sendEmailOnBehalf: z.enum(["verified", "notVerified"]),
 });
 
 export const vendorSchema = z.object({
-  vendorID: z.string().uuid(),
+  vendorId: z.string().uuid(),
   name: z.string(),
   accountLevel: z.enum(["trial", "notActivated", "activated"]),
   defaultCreditAmountPerMeeting: z.number(),
@@ -17,4 +17,44 @@ export const vendorSchema = z.object({
   appLogo: z.object({
     url: z.string().url().optional(),
   }),
+});
+
+export const vendorSettingsSchema = z.object({
+  vendorSettingsId: z.string().uuid(),
+  vendorId: z.string().uuid(),
+  isAllowedGiftCards: z.boolean(),
+  isAllowedDonations: z.boolean(),
+  emailBackgroundSettings: z.string(),
+  referenceQuoteAIPrompt: z.string(),
+  referenceCaseStudyAIPrompt: z.string(),
+  quoteStepEnabled: z.boolean(),
+  reviewStepEnabled: z.boolean(),
+  questionsAndAnswersStepEnabled: z.boolean(),
+  caseStudyStepEnabled: z.boolean(),
+  testimonialStepEnabled: z.boolean(),
+  g2ReviewEnabled: z.boolean(),
+  personalizedVideoStoryboardId: z.nullable(z.string()),
+  addonsStepEnabled: z.boolean(),
+  publicSpeakingEnabled: z.boolean(),
+  webinarsEnabled: z.boolean(),
+  productFeedbackEnabled: z.boolean(),
+  socialPresenceEnabled: z.boolean(),
+  roundTableEnabled: z.boolean(),
+  podcastEnabled: z.boolean(),
+  firstToKnowEnabled: z.boolean(),
+  interviewsEnabled: z.boolean(),
+  collaborationNewProductEnabled: z.boolean(),
+  advisoryBoardEnabled: z.boolean(),
+  contentApprovalRequired: z.boolean(),
+  deetoReviewRequired: z.boolean(),
+  allowAnonymousReference: z.boolean(),
+  referenceRegistrationUrl: z.string(),
+  languagePacks: z.string(),
+  giftcardOptions: z.string(),
+  g2ReviewUrl: z.string().url(),
+  meetingLengthInMinutes: z.number(),
+  currencyPrefix: z.string(),
+  currencyPostfix: z.string().url(),
+  currencyFallback: z.string(),
+  referralUrl: z.nullable(z.string()),
 });

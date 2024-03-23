@@ -1,6 +1,8 @@
 import { z } from "zod";
 import { accountContactSchema } from "./accountContact";
 import { customizedFormValueSchema } from "./customized-form";
+import { avatarSchema } from "./authenticated-user";
+import { vendorSettingsSchema } from "./vendor";
 
 const meSchema = z
   .object({
@@ -18,12 +20,27 @@ const meSchema = z
     isProspect: privileges.includes("prospect"),
   }));
 
-const vendorSchema = z.object({
-  appLogo: z.object({
-    url: z.string().nullable().optional(),
-  }),
+const crmIntegrationSchema = z.object({
+  provider: z.enum(["salesforce", "hubspot"]),
+  organizationId: z.nullable(z.string()),
 });
 
+const vendorSchema = z.object({
+  vendorId: z.string().uuid(),
+  name: z.string(),
+  accountLevel: z.enum(["trial", "notActivated", "activated"]),
+  sendEmailOnBehalf: z.nullable(z.string()),
+  activationDate: z.string().datetime(),
+  defaultCreditAmountPerMeeting: z.number(),
+  avatarId: z.string().uuid(),
+  appLogoId: z.string().uuid(),
+  createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime(),
+  appLogo: avatarSchema,
+  avatar: avatarSchema,
+  settings: vendorSettingsSchema,
+  crmIntegrations: z.array(crmIntegrationSchema),
+});
 export const userSchema = z.object({
   me: meSchema,
   vendor: vendorSchema,
