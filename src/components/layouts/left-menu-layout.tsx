@@ -3,6 +3,7 @@ import { IconComponent } from "@/vite-env";
 import { Link } from "@tanstack/react-router";
 import { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
+import { ScrollArea } from "../ui/scroll-area";
 
 type Props = {
   children: ReactNode;
@@ -29,15 +30,16 @@ export default function LeftMenuLayout({ children, items }: Props) {
           <Link
             to={path}
             key={title}
-            className="flex flex-col items-center justify-center gap-1 font-inter text-sm font-semibold data-[status='active']:text-primary-yellow"
+            className="flex flex-col items-center justify-center gap-1 font-inter text-sm font-semibold
+              data-[status='active']:text-primary-yellow"
           >
             <Icon className="size-7" /> {t(title)}
           </Link>
         ))}
       </div>
-      <div className="relative h-full flex-grow overflow-hidden bg-white">
+      <ScrollArea className="relative h-full flex-grow overflow-hidden bg-white">
         <div className="flex h-full w-full flex-col p-6">{children}</div>
-      </div>
+      </ScrollArea>
     </div>
   );
 }

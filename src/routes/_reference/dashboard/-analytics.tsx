@@ -46,12 +46,13 @@ export default function DashboardAnalytics() {
       {data.val.map(({ value, showCurrency, title, style }) => (
         <Card
           key={title}
+          variant="shadow"
           className={cn(
             "text-secondary-blue min-w-48",
             style === "blue" && "bg-yellow-blue bg-cover bg-center text-white",
           )}
         >
-          <CardDescription className="flex flex-col gap-2 pt-2 p-4">
+          <CardDescription className="flex flex-col gap-2">
             <div className="flex items-center gap-1">
               {showCurrency && <VendorSettingsCurrency prefix size={24} />}
               <h2 className="text-3xl font-semibold">{value}</h2>

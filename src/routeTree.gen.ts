@@ -24,6 +24,9 @@ const IndexLazyImport = createFileRoute('/')()
 const PublicLoginWithEmailLazyImport = createFileRoute(
   '/_public/login-with-email',
 )()
+const ReferenceMyContentIndexLazyImport = createFileRoute(
+  '/_reference/my-content/',
+)()
 const ReferenceDashboardIndexLazyImport = createFileRoute(
   '/_reference/dashboard/',
 )()
@@ -56,6 +59,14 @@ const PublicPartialAuthRouteRoute = PublicPartialAuthRouteImport.update({
   path: '/partial-auth',
   getParentRoute: () => PublicLazyRoute,
 } as any)
+
+const ReferenceMyContentIndexLazyRoute =
+  ReferenceMyContentIndexLazyImport.update({
+    path: '/my-content/',
+    getParentRoute: () => ReferenceLazyRoute,
+  } as any).lazy(() =>
+    import('./routes/_reference/my-content/index.lazy').then((d) => d.Route),
+  )
 
 const ReferenceDashboardIndexLazyRoute =
   ReferenceDashboardIndexLazyImport.update({
@@ -102,6 +113,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReferenceDashboardIndexLazyImport
       parentRoute: typeof ReferenceLazyImport
     }
+    '/_reference/my-content/': {
+      preLoaderRoute: typeof ReferenceMyContentIndexLazyImport
+      parentRoute: typeof ReferenceLazyImport
+    }
   }
 }
 
@@ -114,7 +129,10 @@ export const routeTree = rootRoute.addChildren([
     PublicLoginWithEmailLazyRoute,
     PublicMIndexRoute,
   ]),
-  ReferenceLazyRoute.addChildren([ReferenceDashboardIndexLazyRoute]),
+  ReferenceLazyRoute.addChildren([
+    ReferenceDashboardIndexLazyRoute,
+    ReferenceMyContentIndexLazyRoute,
+  ]),
 ])
 
 /* prettier-ignore-end */

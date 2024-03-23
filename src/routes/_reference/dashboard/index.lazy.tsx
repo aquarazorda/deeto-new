@@ -16,13 +16,14 @@ import DashboardAnalytics, { DashboardAnalyticsSkeleton } from "./-analytics";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn, objectKeys } from "@/lib/utils";
 import { useSuspenseQuery } from "@tanstack/react-query";
+import PageTitle from "@/components/deeto/text/page-title";
 
 function Wrapper({ children }: { children: ReactNode }) {
   const { t } = useTranslation();
 
   return (
     <div className="relative flex flex-col gap-6 overflow-hidden">
-      <h1 className="text-5xl font-bold text-primary">{t("dashboard")}</h1>
+      <PageTitle>{t("dashboard")}</PageTitle>
       <ScrollArea className="h-[60vh] w-full">
         <div>
           <div className="grid h-[60vh] auto-cols-[minmax(22.5rem,_36.25rem)] grid-flow-col gap-2">

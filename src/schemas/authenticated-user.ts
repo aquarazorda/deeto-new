@@ -7,15 +7,15 @@ export const avatarSchema = z.object({
   updatedAt: z.string().datetime().optional(),
 });
 
+export const userStatusSchema = z.enum(["confirmed", "pending", "locked"]);
+
 export const authenticatedUserSchema = z.object({
   authenticatedUserId: z.string().uuid(),
   username: z.string().nullable(),
   firstName: z.string(),
   lastName: z.string(),
   email: z.string().email(),
-  userStatus: z
-    .enum(["confirmed", "pending", "locked"])
-    .describe("User Status"),
+  userStatus: userStatusSchema,
   privileges: z.array(z.string().describe("reference")).optional(),
   profilePicture: avatarSchema.optional(),
   redeemableBalance: z.number().optional(),
