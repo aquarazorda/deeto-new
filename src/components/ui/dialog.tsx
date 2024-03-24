@@ -115,7 +115,10 @@ const DialogDescription = React.forwardRef<
     asChild
     {...props}
   >
-    <ScrollArea className="max-h-[50dvh] px-4">{children}</ScrollArea>
+    <ScrollArea className="max-h-[50dvh] px-4">
+      {children}
+      <div className="h-24" />
+    </ScrollArea>
   </DialogPrimitive.Description>
 ));
 DialogDescription.displayName = DialogPrimitive.Description.displayName;
