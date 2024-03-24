@@ -155,9 +155,9 @@ export const DashboardColumnSkeleton = ({
       <span className="flex items-center justify-between">
         <Skeleton className={cn("h-9 w-14", numberBg)} />
       </span>
-      {Array.from({ length: 6 }).map((_, index) => (
+      {Array.from({ length: 4 }).map((_, index) => (
         <Skeleton
-          className="h-24 w-full rounded-2xl rounded-tl-none"
+          className="h-24 w-full rounded-2xl rounded-tl-none bg-white"
           key={index}
         />
       ))}
