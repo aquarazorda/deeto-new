@@ -1,6 +1,7 @@
 import { VendorSettingsCurrency } from "@/components/deeto/currency/vendor-custom-currency";
 import { Card, CardDescription } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { endpoints } from "@/lib/endpoints";
 import { queryKeys } from "@/lib/query";
 import { api } from "@/lib/requests";
 import { cn } from "@/lib/utils";
@@ -36,7 +37,7 @@ const Wrapper = ({ children }: { children: ReactNode }) => {
 export default function DashboardAnalytics() {
   const { data } = useSuspenseQuery({
     queryKey: [queryKeys.REFERENCE_DASHBOARD_STATISTICS],
-    queryFn: () => api.get("STATISTIC_DASHBOARD", statisticsSchema),
+    queryFn: () => api.get(endpoints.STATISTIC_DASHBOARD, statisticsSchema),
   });
 
   if (!data.ok) return null;
@@ -87,7 +88,6 @@ export function DashboardAnalyticsSkeleton() {
               <h2>
                 <Skeleton className="size-10 bg-tint-blue" />
               </h2>
-              <VendorSettingsCurrency />
             </div>
             <Skeleton className="h-8 w-60 bg-tint-blue" />
           </CardDescription>

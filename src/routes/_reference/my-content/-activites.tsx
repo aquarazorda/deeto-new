@@ -2,8 +2,9 @@ import Pen from "@/assets/icons/pen.svg?react";
 import ActivityAddon from "@/components/deeto/activity-addon";
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription } from "@/components/ui/card";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { addonSchema } from "@/schemas/contributions";
-import { useMemo } from "react";
+import { lazy, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
 
@@ -13,6 +14,8 @@ const mainAddons = [
   "PublicSpeaking",
   "AdvisoryBoard",
 ];
+
+const EditActivityDialogContent = lazy(() => import("./-edit-activites"));
 
 export default function ReferenceActivitiesCard({
   addons,
@@ -29,12 +32,17 @@ export default function ReferenceActivitiesCard({
 
   return (
     <Card variant="shadow">
-      <CardDescription className="font-bold text-primary-dark flex flex-col gap-4">
-        <div className="flex justify-between items-center">
+      <CardDescription className="flex flex-col gap-4 font-bold text-primary-dark">
+        <div className="flex items-center justify-between">
           <p className="text-xl">{t("activities")}</p>
-          <Button variant="outline" size="sm">
-            <Pen /> {t("edit")}
-          </Button>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="outline" size="sm">
+                <Pen /> {t("edit")}
+              </Button>
+            </DialogTrigger>
+            <EditActivityDialogContent />
+          </Dialog>
         </div>
         <div className="grid grid-cols-4 gap-4">
           {mainAddons.map((type) => (

@@ -21,6 +21,7 @@ import { z } from "zod";
 import ReferenceActivitiesCard from "./-activites";
 import { onboardingStepSchema } from "@/schemas/onboarding";
 import ContributionCard from "@/components/deeto/contribution-card";
+import { endpoints } from "@/lib/endpoints";
 
 type ContentState = Record<
   StepName,
@@ -34,7 +35,8 @@ const Component = () => {
   const { t } = useTranslation();
   const { data } = useSuspenseQuery({
     queryKey: queryKeys.REFERENCE_MY_CONTENT,
-    queryFn: () => api.get("GET_ME_CONTRIBUTIONS", contributionsRequestSchema),
+    queryFn: () =>
+      api.get(endpoints.GET_ME_CONTRIBUTIONS, contributionsRequestSchema),
   });
 
   const contributions = useMemo(() => {
@@ -63,13 +65,13 @@ const Component = () => {
     <div className="flex flex-col gap-8">
       <PageTitle>{t("my_content")}</PageTitle>
       <Card variant="shadow" className="font-bold">
-        <CardDescription className="flex gap-6 items-center">
+        <CardDescription className="flex items-center gap-6">
           <p className="text-2xl">{t("influence")}</p>
           <Progress
             value={Number(profile.influenceLevel)}
             key="influence-progress"
           />{" "}
-          <div className="text-xl flex items-center">
+          <div className="flex items-center text-xl">
             {profile.influenceLevel}
             <span className="text-grey-400">/100</span>
           </div>
@@ -77,7 +79,7 @@ const Component = () => {
       </Card>
       <ReferenceActivitiesCard addons={addons} />
       <Card variant="shadow">
-        <CardDescription className="font-bold text-primary-dark flex flex-col gap-4">
+        <CardDescription className="flex flex-col gap-4 font-bold text-primary-dark">
           <p className="text-xl">{t("contributions")}</p>
           <div className="grid grid-cols-2 gap-4">
             <ContributionCard

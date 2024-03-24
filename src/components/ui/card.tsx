@@ -3,12 +3,16 @@ import { cn } from "@/lib/utils";
 import { VariantProps, cva } from "class-variance-authority";
 
 const cardVariants = cva(
-  "rounded-3xl rounded-tl-none border bg-white border-grey-100 px-4 py-2 text-card-foreground transition-colors",
+  "rounded-3xl border bg-white px-4 py-2 text-card-foreground transition-colors",
   {
     variants: {
       variant: {
-        default: "shadow-sm",
+        default: "shadow-sm border-grey-200",
         shadow: "shadow-md p-4",
+      },
+      borders: {
+        default: "rounded-tl-none",
+        full: "",
       },
     },
     defaultVariants: {
@@ -22,10 +26,10 @@ interface CardProps
     VariantProps<typeof cardVariants> {}
 
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  ({ className, variant, ...props }, ref) => (
+  ({ className, variant, borders, ...props }, ref) => (
     <div
       ref={ref}
-      className={cn(cardVariants({ variant, className }))}
+      className={cn(cardVariants({ variant, className, borders }))}
       {...props}
     />
   ),

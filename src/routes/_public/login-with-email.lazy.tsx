@@ -16,6 +16,7 @@ import { api } from "@/lib/requests";
 import { useMutation } from "@tanstack/react-query";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { useTranslation } from "react-i18next";
+import { endpoints } from "@/lib/endpoints";
 
 const schema = z.object({
   email: z.string().email(),
@@ -38,7 +39,7 @@ function EmailLogin() {
       const captchaToken = await executeRecaptcha();
 
       const res = await api.post(
-        "LOGIN_WITH_MAIL_PATH",
+        endpoints.LOGIN_WITH_MAIL_PATH,
         z.object({
           success: z.boolean(),
         }),

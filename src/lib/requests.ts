@@ -2,9 +2,6 @@ import { Err, Ok } from "ts-results";
 import { ZodType, z } from "zod";
 import { getCookie } from "./cookie";
 import { BACKEND_URL } from "@/config";
-import { endpoints } from "@/lib/endpoints";
-
-type Endpoint = keyof typeof endpoints;
 
 const responseSchema = z.object({
   code: z.number(),
@@ -13,12 +10,12 @@ const responseSchema = z.object({
 });
 
 const fetcher = async <T extends ZodType>(
-  url: Endpoint,
+  url: string,
   schema: T,
   props?: RequestInit,
 ) => {
   try {
-    const res = await fetch(BACKEND_URL + endpoints[url], {
+    const res = await fetch(BACKEND_URL + url, {
       ...props,
       headers: {
         ...props?.headers,
@@ -54,10 +51,10 @@ const fetcher = async <T extends ZodType>(
   }
 };
 
-const get = <T extends ZodType>(url: Endpoint, schema: T) =>
+const get = <T extends ZodType>(url: string, schema: T) =>
   fetcher<T>(url, schema);
 
-const post = <T extends ZodType, U>(url: Endpoint, schema: T, body: U) =>
+const post = <T extends ZodType, U>(url: string, schema: T, body: U) =>
   fetcher(url, schema, {
     method: "POST",
     body: JSON.stringify(body),

@@ -17,3 +17,32 @@ export const onboardingStepSchema = z.object({
   status: z.enum(["finished", "skipped", "hidden"]),
   rewards: rewardSchema.optional(),
 });
+
+const frequencyOptionSchema = z.object({
+  title: z.string(),
+  value: z.number(),
+});
+
+const frequencyOptionsSchema = z.object({
+  frequency: z.number(),
+  frequencyOptions: z.array(frequencyOptionSchema),
+});
+
+export const onboardingAddonSchema = z.object({
+  type: z.enum([
+    "Frequency",
+    "Webinars",
+    "PublicSpeaking",
+    "ProductFeedback",
+    "SocialPresence",
+    "RoundTable",
+    "Podcast",
+    "FirstToKnow",
+    "InterViews",
+    "CollaborationNewProducts",
+    "AdvisoryBoard",
+  ]),
+  rewardAmount: z.number(),
+  isSelected: z.boolean(),
+  options: frequencyOptionsSchema.optional(),
+});

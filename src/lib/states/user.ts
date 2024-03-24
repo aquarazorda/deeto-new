@@ -6,6 +6,7 @@ import { userSchema } from "@/schemas/user";
 import { getCookie, setCookie } from "../cookie";
 import { Err } from "ts-results";
 import { P, match } from "ts-pattern";
+import { endpoints } from "../endpoints";
 
 type UserState = z.infer<typeof userSchema>;
 
@@ -21,7 +22,7 @@ const refreshTokenSchema = z.object({
 });
 
 const getAccessTokenWithRefreshToken = async (refreshToken: string) => {
-  const res = await api.post("REFRESH_TOKEN", refreshTokenSchema, {
+  const res = await api.post(endpoints.REFRESH_TOKEN, refreshTokenSchema, {
     refreshToken,
   });
 
@@ -35,7 +36,7 @@ const getAccessTokenWithRefreshToken = async (refreshToken: string) => {
   return res;
 };
 
-const userFetchReq = () => api.get("USER_PATH", userSchema);
+const userFetchReq = () => api.get(endpoints.USER_PATH, userSchema);
 
 const validateAndSetUser = (data: Awaited<ReturnType<typeof userFetchReq>>) => {
   if (data.ok) {
@@ -73,9 +74,9 @@ const fetchUserFn = async ({ accessToken, refreshToken }: Partial<Tokens>) => {
 };
 
 export const fetchUser = async () => {
-  if (window.location.href.includes("/m?")) {
-    return;
-  }
+  // if (window.location.href.includes("/m?")) {
+  //   return;
+  // }
 
   return fetchUserFn({
     accessToken: getCookie("accessToken"),

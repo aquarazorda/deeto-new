@@ -8,6 +8,7 @@ import { api } from "@/lib/requests";
 import { setTokensAndGetUser } from "@/lib/states/user";
 import { P, match } from "ts-pattern";
 import { authResponseSchema } from "@/schemas/auth";
+import { endpoints } from "@/lib/endpoints";
 
 const shortenLinkResponseSchema = z.union([
   authResponseSchema,
@@ -27,7 +28,7 @@ const MagicRoute = () => {
     mutationFn: async () => {
       const captchaToken = await executeRecaptcha!();
       const res = await api.post(
-        "MAGIC_SHORTEN_LINK_AUTH",
+        endpoints.MAGIC_SHORTEN_LINK_AUTH,
         shortenLinkResponseSchema,
         {
           shortenLinkId: l,

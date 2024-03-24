@@ -8,6 +8,7 @@ import GiftBox from "~/icons/gift-box.svg?react";
 import { Button } from "../ui/button";
 import { PlusIcon } from "lucide-react";
 import { VendorSettingsCurrency } from "./currency/vendor-custom-currency";
+import { Fragment } from "react/jsx-runtime";
 
 export const ContributionSkeleton = ({
   length,
@@ -88,10 +89,10 @@ export default function ContributionCard({
               {contribution.previewText || contribution.text}
               {contribution.faq &&
                 contribution.faq.map(({ fieldLabel, value }) => (
-                  <>
+                  <Fragment key={fieldLabel}>
                     <p>Q:{fieldLabel}</p>
                     <p>A:{value}</p>
-                  </>
+                  </Fragment>
                 ))}
             </div>
           </div>

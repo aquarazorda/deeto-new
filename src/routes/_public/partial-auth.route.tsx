@@ -14,6 +14,7 @@ import { useTranslation } from "react-i18next";
 import { z } from "zod";
 import WarningExclamation from "@/assets/warning-exclamation.svg?react";
 import { setTokensAndGetUser } from "@/lib/states/user";
+import { endpoints } from "@/lib/endpoints";
 
 const searchSchema = z.object({
   email: z.string().optional(),
@@ -28,10 +29,14 @@ const Component = () => {
 
   const { mutateAsync, data, isPending } = useMutation({
     mutationFn: async (otp: string) => {
-      const res = await api.post("LOGIN_PARTIAL_PATH", authResponseSchema, {
-        code: otp,
-        linkId: l,
-      });
+      const res = await api.post(
+        endpoints.LOGIN_PARTIAL_PATH,
+        authResponseSchema,
+        {
+          code: otp,
+          linkId: l,
+        },
+      );
 
       if (res.ok) {
         setTokensAndGetUser(res.val);

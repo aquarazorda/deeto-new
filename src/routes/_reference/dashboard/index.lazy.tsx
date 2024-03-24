@@ -17,6 +17,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { cn, objectKeys } from "@/lib/utils";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import PageTitle from "@/components/deeto/text/page-title";
+import { endpoints } from "@/lib/endpoints";
 
 function Wrapper({ children }: { children: ReactNode }) {
   const { t } = useTranslation();
@@ -42,7 +43,7 @@ function Wrapper({ children }: { children: ReactNode }) {
 function ReferenceMainRoute() {
   const { data } = useSuspenseQuery({
     queryKey: [queryKeys.REFERENCE_DASHBOARD],
-    queryFn: () => api.get("DASHBOARD_PATH", dashboardSchema),
+    queryFn: () => api.get(endpoints.DASHBOARD_PATH, dashboardSchema),
   });
 
   if (!data.ok) {
