@@ -6,7 +6,7 @@ export const Spinner = ({
   ...rest
 }: HTMLAttributes<HTMLDivElement>) => {
   return (
-    <div className={"h-full w-full items-center justify-center"}>
+    <div className={"h-full w-full items-center justify-center"} {...rest}>
       <div className={cn("size-6", className)}>
         <svg
           viewBox="0 0 24 24"
