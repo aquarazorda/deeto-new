@@ -41,6 +41,7 @@ const userFetchReq = () => api.get(endpoints.USER_PATH, userSchema);
 const validateAndSetUser = (data: Awaited<ReturnType<typeof userFetchReq>>) => {
   if (data.ok) {
     useUser.setState(data.val);
+    localStorage.setItem("user", JSON.stringify(data.val));
     return data;
   }
 
@@ -73,10 +74,24 @@ const fetchUserFn = async ({ accessToken, refreshToken }: Partial<Tokens>) => {
     );
 };
 
-export const fetchUser = async () => {
+export const fetchUser = async (fromLocal?: boolean) => {
   // if (window.location.href.includes("/m?")) {
   //   return;
   // }
+  if (fromLocal) {
+    const res = userSchema.safeParse(
+      JSON.parse(localStorage.getItem("user") || "{}"),
+    );
+
+    if (res.success) {
+      fetchUserFn({
+        accessToken: getCookie("accessToken"),
+        refreshToken: getCookie("refreshToken"),
+      });
+      useUser.setState(res.data);
+      return res.data;
+    }
+  }
 
   return fetchUserFn({
     accessToken: getCookie("accessToken"),

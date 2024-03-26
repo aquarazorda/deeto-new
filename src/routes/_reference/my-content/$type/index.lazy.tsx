@@ -58,7 +58,9 @@ const Content = () => {
     <div className="flex flex-col gap-6">
       <PageTitle>
         <Button size="lg" className="px-2 py-1">
-          <ArrowLeft className="size-10" />
+          <Link to="/my-content">
+            <ArrowLeft className="size-10" />
+          </Link>
         </Button>
         {t("content_details")}
       </PageTitle>
@@ -87,4 +89,3 @@ const Content = () => {
 export const Route = createLazyFileRoute("/_reference/my-content/$type/")({
   component: Content,
 });
-

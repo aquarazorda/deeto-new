@@ -35,7 +35,7 @@ const rootElement = document.getElementById("app")!;
 const root = ReactDOM.createRoot(rootElement);
 
 const render = async () => {
-  await fetchUser();
+  await fetchUser(true);
   root.render(
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
