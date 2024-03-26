@@ -2,12 +2,24 @@ import { Err, Ok } from "ts-results";
 import { ZodType, z } from "zod";
 import { getCookie } from "./cookie";
 import { BACKEND_URL } from "@/config";
+import { fetchUser, getAccessTokenWithRefreshToken } from "./states/user";
 
 const responseSchema = z.object({
   code: z.number(),
   message: z.string(),
-  data: z.any().optional(),
+  data: z.unknown().optional(),
 });
+
+const genericFetch = (url: string, props?: RequestInit) =>
+  fetch(BACKEND_URL + url, {
+    ...props,
+    headers: {
+      ...props?.headers,
+      Authorizationtoken: getCookie("accessToken") ?? "",
+    },
+  })
+    .then((res) => res.json())
+    .then(responseSchema.safeParse);
 
 const fetcher = async <T extends ZodType>(
   url: string,
@@ -15,19 +27,26 @@ const fetcher = async <T extends ZodType>(
   props?: RequestInit,
 ) => {
   try {
-    const res = await fetch(BACKEND_URL + url, {
-      ...props,
-      headers: {
-        ...props?.headers,
-        Authorizationtoken: getCookie("accessToken") ?? "",
-      },
-    })
-      .then((res) => res.json())
-      .then(responseSchema.safeParse);
+    let res = await genericFetch(url, props);
 
     if (!res.success) {
       console.error(res.error);
       return new Err(res.error.toString());
+    }
+
+    if (res.data.code === 401) {
+      const rt = getCookie("refreshToken");
+      if (rt) {
+        const refreshTokenRes = await getAccessTokenWithRefreshToken(rt);
+        if (refreshTokenRes.ok) {
+          fetchUser();
+          res = await genericFetch(url, props);
+          if (!res.success) {
+            console.error(res.error);
+            return new Err(res.error.toString());
+          }
+        }
+      }
     }
 
     if (res.data.code !== 0 && res.data.message !== "success") {

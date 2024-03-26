@@ -21,7 +21,7 @@ const refreshTokenSchema = z.object({
   refreshToken: z.string(),
 });
 
-const getAccessTokenWithRefreshToken = async (refreshToken: string) => {
+export const getAccessTokenWithRefreshToken = async (refreshToken: string) => {
   const res = await api.post(endpoints.REFRESH_TOKEN, refreshTokenSchema, {
     refreshToken,
   });
