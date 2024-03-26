@@ -84,7 +84,7 @@ export const fetchUser = async () => {
   });
 };
 
-export const usePrivileges = () =>
+export const useUserPrivileges = () =>
   useUser(
     useShallow((state) => ({
       isVendor: state.me?.isVendor,

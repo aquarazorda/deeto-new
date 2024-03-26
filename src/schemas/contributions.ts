@@ -2,6 +2,10 @@ import { z } from "zod";
 import { customizedFormValueSchema } from "./customized-form";
 import { avatarSchema, userStatusSchema } from "./authenticated-user";
 import { onboardingStepSchema } from "./onboarding";
+import {
+  CONTRIBUTION_USAGE_POLICY_ENUM,
+  VENDOR_PUBLISH_POLICY,
+} from "@/lib/types/contributions/vendor";
 
 export const addonSchema = z.object({
   type: z.string(),
@@ -35,12 +39,13 @@ export const contributionSchema = z.object({
   previewText: z.string(),
   rewards: z.number(),
   views: z.number(),
-  usagePolicy: z.enum(["ConsentToUse"]),
+  usagePolicy: z.nativeEnum(CONTRIBUTION_USAGE_POLICY_ENUM),
   usagePolicyChangedAt: z.string().datetime(),
-  vendorPublishPolicy: z.enum(["approved"]),
+  vendorPublishPolicy: z.nativeEnum(VENDOR_PUBLISH_POLICY),
   vendorPublishPolicyChangedAt: z.string().datetime(),
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
+  url: z.string().url().optional(),
   faq: z.array(customizedFormValueSchema).optional(),
   firstQA: z
     .object({
@@ -68,7 +73,7 @@ const profileSchema = z.object({
 export const contributionsRequestSchema = z.object({
   addons: z.array(addonSchema),
   contributions: z.array(contributionSchema),
-  external: z.array(z.unknown()),
+  external: z.array(contributionSchema),
   profile: profileSchema,
   steps: z.array(onboardingStepSchema),
 });

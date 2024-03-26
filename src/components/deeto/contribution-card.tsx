@@ -9,6 +9,7 @@ import { Button } from "../ui/button";
 import { PlusIcon } from "lucide-react";
 import { VendorSettingsCurrency } from "./currency/vendor-custom-currency";
 import { Fragment } from "react/jsx-runtime";
+import { Link } from "@tanstack/react-router";
 
 export const ContributionSkeleton = ({
   length,
@@ -52,52 +53,57 @@ export default function ContributionCard({
 
   return (
     <Card className="flex-1 cursor-pointer rounded-xl p-4 hover:bg-grey-200">
-      <CardDescription className="flex h-full flex-col space-y-4 text-primary">
-        <div className="flex items-center justify-between">
-          <div className="rounded-md bg-primary-orange px-2 py-1 text-xs capitalize">
-            {t(step.identifier.toLowerCase())}
-          </div>
-          <div>
-            {contribution ? (
-              <span className="flex items-center gap-1 text-sm">
-                <GiftBox className="size-5" />
-                <VendorSettingsCurrency>
-                  {contribution.rewards}
-                </VendorSettingsCurrency>
-              </span>
-            ) : (
-              <Button variant="outline" size="icon-sm">
-                <PlusIcon className="size-4" />
-              </Button>
-            )}
-          </div>
-        </div>
-        {!contribution && (
-          <span className="flex w-full flex-1 items-end pb-4 text-base text-grey-400">
-            {t(`${step.identifier}_not_available`)}
-          </span>
-        )}
-        {contribution && (
-          <div className="flex items-center gap-4">
-            {contribution.thumbnail && (
-              <img
-                src={contribution.thumbnail}
-                className="size-36 rounded-lg object-cover"
-              />
-            )}
-            <div className="line-clamp-5 h-full w-full text-base font-normal">
-              {contribution.previewText || contribution.text}
-              {contribution.faq &&
-                contribution.faq.map(({ fieldLabel, value }) => (
-                  <Fragment key={fieldLabel}>
-                    <p>Q:{fieldLabel}</p>
-                    <p>A:{value}</p>
-                  </Fragment>
-                ))}
+      <Link
+        to={"/my-content/$type"}
+        params={{ type: contribution?.type ?? "" }}
+      >
+        <CardDescription className="flex h-full flex-col space-y-4 text-primary">
+          <div className="flex items-center justify-between">
+            <div className="rounded-md bg-primary-orange px-2 py-1 text-xs capitalize">
+              {t(step.identifier.toLowerCase())}
+            </div>
+            <div>
+              {contribution ? (
+                <span className="flex items-center gap-1 text-sm">
+                  <GiftBox className="size-5" />
+                  <VendorSettingsCurrency>
+                    {contribution.rewards}
+                  </VendorSettingsCurrency>
+                </span>
+              ) : (
+                <Button variant="outline" size="icon-sm">
+                  <PlusIcon className="size-4" />
+                </Button>
+              )}
             </div>
           </div>
-        )}
-      </CardDescription>
+          {!contribution && (
+            <span className="flex w-full flex-1 items-end pb-4 text-base text-grey-400">
+              {t(`${step.identifier}_not_available`)}
+            </span>
+          )}
+          {contribution && (
+            <div className="flex items-center gap-4">
+              {contribution.thumbnail && (
+                <img
+                  src={contribution.thumbnail}
+                  className="size-36 rounded-lg object-cover"
+                />
+              )}
+              <div className="line-clamp-5 h-full w-full text-base font-normal">
+                {contribution.previewText || contribution.text}
+                {contribution.faq &&
+                  contribution.faq.map(({ fieldLabel, value }) => (
+                    <Fragment key={fieldLabel}>
+                      <p>Q:{fieldLabel}</p>
+                      <p>A:{value}</p>
+                    </Fragment>
+                  ))}
+              </div>
+            </div>
+          )}
+        </CardDescription>
+      </Link>
     </Card>
   );
 }

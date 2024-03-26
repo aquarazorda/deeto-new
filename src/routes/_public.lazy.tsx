@@ -1,13 +1,13 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { RECAPTCHA_KEY } from "@/config";
-import { usePrivileges } from "@/lib/states/user";
+import { useUserPrivileges } from "@/lib/states/user";
 import { Navigate, Outlet, createLazyFileRoute } from "@tanstack/react-router";
 import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 import { match } from "ts-pattern";
 
 export const Route = createLazyFileRoute("/_public")({
   component: () => {
-    const privileges = usePrivileges();
+    const privileges = useUserPrivileges();
 
     return match(privileges)
       .with({ isReference: true }, () => <Navigate to="/dashboard" />)

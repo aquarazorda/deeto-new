@@ -30,6 +30,9 @@ const ReferenceMyContentIndexLazyImport = createFileRoute(
 const ReferenceDashboardIndexLazyImport = createFileRoute(
   '/_reference/dashboard/',
 )()
+const ReferenceMyContentTypeIndexLazyImport = createFileRoute(
+  '/_reference/my-content/$type/',
+)()
 
 // Create/Update Routes
 
@@ -81,6 +84,16 @@ const PublicMIndexRoute = PublicMIndexImport.update({
   getParentRoute: () => PublicLazyRoute,
 } as any)
 
+const ReferenceMyContentTypeIndexLazyRoute =
+  ReferenceMyContentTypeIndexLazyImport.update({
+    path: '/my-content/$type/',
+    getParentRoute: () => ReferenceLazyRoute,
+  } as any).lazy(() =>
+    import('./routes/_reference/my-content/$type/index.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -117,6 +130,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReferenceMyContentIndexLazyImport
       parentRoute: typeof ReferenceLazyImport
     }
+    '/_reference/my-content/$type/': {
+      preLoaderRoute: typeof ReferenceMyContentTypeIndexLazyImport
+      parentRoute: typeof ReferenceLazyImport
+    }
   }
 }
 
@@ -132,6 +149,7 @@ export const routeTree = rootRoute.addChildren([
   ReferenceLazyRoute.addChildren([
     ReferenceDashboardIndexLazyRoute,
     ReferenceMyContentIndexLazyRoute,
+    ReferenceMyContentTypeIndexLazyRoute,
   ]),
 ])
 

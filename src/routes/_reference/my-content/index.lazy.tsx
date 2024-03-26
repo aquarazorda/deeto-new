@@ -5,13 +5,7 @@ import { createLazyFileRoute } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 
 import MyContentPending from "./-loading";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { queryKeys } from "@/lib/query";
-import { api } from "@/lib/requests";
-import {
-  contributionSchema,
-  contributionsRequestSchema,
-} from "@/schemas/contributions";
+import { contributionSchema } from "@/schemas/contributions";
 import { useMemo } from "react";
 import {
   StepName,
@@ -21,7 +15,7 @@ import { z } from "zod";
 import ReferenceActivitiesCard from "./-activites";
 import { onboardingStepSchema } from "@/schemas/onboarding";
 import ContributionCard from "@/components/deeto/contribution-card";
-import { endpoints } from "@/lib/endpoints";
+import useMyContributionsQuery from "./-query";
 
 type ContentState = Record<
   StepName,
@@ -33,12 +27,7 @@ type ContentState = Record<
 
 const Component = () => {
   const { t } = useTranslation();
-  const { data } = useSuspenseQuery({
-    queryKey: queryKeys.REFERENCE_MY_CONTENT,
-    queryFn: () =>
-      api.get(endpoints.GET_ME_CONTRIBUTIONS, contributionsRequestSchema),
-  });
-
+  const { data } = useMyContributionsQuery();
   const contributions = useMemo(() => {
     if (!data.ok || (data.ok && !data.val.steps)) return {} as ContentState;
 

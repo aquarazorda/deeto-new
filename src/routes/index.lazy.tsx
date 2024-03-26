@@ -3,7 +3,7 @@ import { Navigate, createLazyFileRoute } from "@tanstack/react-router";
 import { match } from "ts-pattern";
 import { useMemo } from "react";
 import { Spinner } from "@/components/loaders/spinner";
-import { usePrivileges } from "@/lib/states/user";
+import { useUserPrivileges } from "@/lib/states/user";
 
 export const Route = createLazyFileRoute("/")({
   component: Index,
@@ -16,7 +16,7 @@ function Index() {
     return <Navigate to="/login-with-email" />;
   }
 
-  const privileges = usePrivileges();
+  const privileges = useUserPrivileges();
 
   return match(privileges)
     .with({ isReference: true }, () => <Navigate to="/dashboard" />)
