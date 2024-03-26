@@ -1,0 +1,33 @@
+import { z } from "zod";
+export enum ReferralStatus {
+  NEW = "new",
+  QUALIFIED = "qualified",
+  DISQUALIFIED = "disqualified",
+  WON = "won",
+  CLOSED = "closed",
+  DELETED = "deleted",
+}
+export const referralSchema = z.object({
+  referralId: z.string().uuid(),
+  referenceId: z.string().uuid(),
+  vendorId: z.string().uuid(),
+  accountContactId: z.nullable(z.string()),
+  firstName: z.string(),
+  lastName: z.string(),
+  email: z.string().email(),
+  companyName: z.string(),
+  linkedInProfile: z.nullable(z.string()),
+  jobTitle: z.string(),
+  messageToVendor: z.string(),
+  rejectionReason: z.nullable(z.string()),
+  status: z.nativeEnum(ReferralStatus),
+  referralProgramId: z.string().uuid(),
+  rewardAmountOnSubmissionQualified: z.number(),
+  rewardAmountOnSubmissionWon: z.number(),
+  createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime(),
+  // statusHistory: z.array(StatusHistory),
+  // program: ReferralProgram,
+  statusChangedAt: z.string().datetime(),
+  rewards: z.array(z.number()),
+});
