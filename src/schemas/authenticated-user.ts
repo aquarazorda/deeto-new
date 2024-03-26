@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const avatarSchema = z.object({
   type: z.enum(["default", "initial", "picture"]),
-  url: z.string().url().optional(),
+  url: z.string().url().nullable().optional(),
   createdAt: z.string().datetime().optional(),
   updatedAt: z.string().datetime().optional(),
 });
@@ -20,4 +20,5 @@ export const authenticatedUserSchema = z.object({
   profilePicture: avatarSchema.optional(),
   redeemableBalance: z.number().optional(),
   preferredTimezone: z.string().describe("UTC+5"),
+  avatar: avatarSchema,
 });

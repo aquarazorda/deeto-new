@@ -6,9 +6,9 @@ import { Card, CardDescription } from "@/components/ui/card";
 import { useTranslation } from "react-i18next";
 import { useUser } from "@/lib/states/user";
 import { useShallow } from "zustand/react/shallow";
-import Avatar from "@/components/deeto/avatar";
 import DeetoLogo from "@/assets/icons/deeto-logo.svg?react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 type MeetingStatus = Exclude<
   z.infer<typeof meetingStatusSchema>["meetingStatus"],
@@ -95,8 +95,10 @@ const EmptyCard = ({
       )}
     >
       <CardDescription className="flex gap-4 p-4">
-        <Avatar className="bg-white">
-          <DeetoLogo className="size-12 text-primary-dark" />
+        <Avatar>
+          <AvatarFallback className="bg-white">
+            <DeetoLogo className="size-12 text-primary-dark" />
+          </AvatarFallback>
         </Avatar>
         <p className="flex flex-1 items-center text-base font-semibold leading-tight text-primary-dark">
           {/* @ts-ignore  */}

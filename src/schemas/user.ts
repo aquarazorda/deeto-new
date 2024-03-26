@@ -12,6 +12,8 @@ const meSchema = z
     }),
     customizedFormValues: z.array(customizedFormValueSchema).optional(),
     privileges: z.array(z.enum(["reference", "vendor", "prospect"])),
+    firstName: z.string(),
+    lastName: z.string(),
   })
   .transform(({ privileges, ...rest }) => ({
     ...rest,

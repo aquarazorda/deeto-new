@@ -5,6 +5,7 @@ import { calcStatusLabelId } from "./-utils";
 import { format } from "date-fns";
 import { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
+import Pen from "~/icons/pen.svg?react";
 
 const Block = ({
   title,
@@ -50,7 +51,9 @@ export default function AdditionalInfoRow({
         />
         <Block title={t("viewed")} description={item.views} />
       </div>
-      <Button>{t("edit")}</Button>
+      <Button>
+        <Pen /> {t("edit")}
+      </Button>
     </div>
   );
 }

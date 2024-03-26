@@ -1,4 +1,3 @@
-import Avatar from "@/components/deeto/avatar";
 import { Card } from "@/components/ui/card";
 import {
   Popover,
@@ -12,6 +11,7 @@ import { meetingSchema } from "@/schemas/meetings";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
 import { Link } from "@tanstack/react-router";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export const MeetingCard = ({
   meeting: { prospectContact },
@@ -22,7 +22,15 @@ export const MeetingCard = ({
   return (
     <Card className="py-4">
       <div className="flex gap-2">
-        <Avatar />
+        <Avatar size="md">
+          <AvatarImage
+            src={prospectContact.authenticatedUser.avatar.url ?? undefined}
+          />
+          <AvatarFallback>
+            {prospectContact.authenticatedUser.firstName?.[0]}
+            {prospectContact.authenticatedUser.lastName?.[0]}
+          </AvatarFallback>
+        </Avatar>
         <div className="mx-auto flex flex-1 items-center">
           <span className="inter flex flex-col font-semibold text-primary-dark">
             <span>
