@@ -79,17 +79,15 @@ export const fetchUser = async (fromLocal?: boolean) => {
   //   return;
   // }
   if (fromLocal) {
-    const res = userSchema.safeParse(
-      JSON.parse(localStorage.getItem("user") || "{}"),
-    );
+    const res = JSON.parse(localStorage.getItem("user") || "{}");
 
-    if (res.success) {
+    if (res) {
       fetchUserFn({
         accessToken: getCookie("accessToken"),
         refreshToken: getCookie("refreshToken"),
       });
-      useUser.setState(res.data);
-      return res.data;
+      useUser.setState(res);
+      return res;
     }
   }
 
