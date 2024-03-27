@@ -21,7 +21,7 @@ const DialogOverlay = React.forwardRef<
   <DialogPrimitive.Overlay
     ref={ref}
     className={cn(
-      "fixed inset-0 z-50 bg-black/40  data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+      "fixed inset-0 z-50 bg-primary/70  data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
       className,
     )}
     {...props}
@@ -79,14 +79,17 @@ const DialogFooter = ({
   className,
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) => (
-  <div
-    className={cn(
-      `absolute bottom-0 flex w-full flex-col-reverse rounded-b-3xl border-t
-      bg-tint-purple/40 p-4 sm:flex-row sm:justify-end sm:space-x-2`,
-      className,
-    )}
-    {...props}
-  />
+  <>
+    <div className="h-24" />
+    <div
+      className={cn(
+        `absolute bottom-0 flex w-full flex-col-reverse rounded-b-3xl border-t
+        bg-tint-purple/40 p-4 sm:flex-row sm:justify-end sm:space-x-2`,
+        className,
+      )}
+      {...props}
+    />
+  </>
 );
 DialogFooter.displayName = "DialogFooter";
 
@@ -109,15 +112,9 @@ const DialogDescription = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Description>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Description>
 >(({ className, children, ...props }, ref) => (
-  <DialogPrimitive.Description
-    ref={ref}
-    className={cn("text-primary", className)}
-    asChild
-    {...props}
-  >
-    <ScrollArea className="max-h-[50dvh] px-4">
-      {children}
-      <div className="h-24" />
+  <DialogPrimitive.Description ref={ref} asChild {...props}>
+    <ScrollArea className="max-h-[50dvh] w-full">
+      <div className={cn("px-4", className)}>{children}</div>
     </ScrollArea>
   </DialogPrimitive.Description>
 ));
