@@ -29,7 +29,7 @@ const MenuContent = () => {
     >
       <Link
         className="flex h-14 w-full items-center px-4 hover:bg-primary-yellow"
-        to="/settings"
+        to="/settings/my-profile"
       >
         {t("settings")}
       </Link>

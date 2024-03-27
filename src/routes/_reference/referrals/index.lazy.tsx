@@ -1,4 +1,3 @@
-import { VendorSettingsCurrency } from "@/components/deeto/currency/vendor-custom-currency";
 import PageTitle from "@/components/deeto/text/page-title";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -81,4 +80,3 @@ const ReferralsComponent = () => {
 export const Route = createLazyFileRoute("/_reference/referrals/")({
   component: ReferralsComponent,
 });
-
