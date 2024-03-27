@@ -10,6 +10,8 @@ const meSchema = z
     avatar: z.object({
       url: z.string().nullable().optional(),
     }),
+    email: z.string(),
+    secondaryEmail: z.string().nullable().optional(),
     customizedFormValues: z.array(customizedFormValueSchema).optional(),
     privileges: z.array(z.enum(["reference", "vendor", "prospect"])),
     firstName: z.string(),

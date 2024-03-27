@@ -37,10 +37,7 @@ const Content = () => {
           </Link>
         ))}
       </div>
-      <Card
-        variant="shadow"
-        className="col-span-4 border-none px-6 py-4 shadow-card"
-      >
+      <Card variant="shadow" className="col-span-4 px-6 py-4 shadow-card">
         <ScrollArea className="h-full w-full">
           <Outlet />
         </ScrollArea>
