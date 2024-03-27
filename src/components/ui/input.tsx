@@ -9,14 +9,15 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, placeholder, ...props }, ref) => {
     return (
       <div
-        className="bg-white shadow-input relative px-4 border-input rounded-2xl border-tint-purple
-          border"
+        className="relative rounded-2xl border border-input border-tint-purple bg-white px-4
+          shadow-input"
       >
         <input
           type={type}
           className={cn(
-            `flex peer w-full bg-transparent pt-8 pb-3 text-sm border-0 color-primary-dark
-            focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50`,
+            `color-primary-dark peer flex w-full border-0 bg-transparent pb-3 pt-8 text-lg
+            font-semibold focus-visible:outline-none disabled:cursor-not-allowed
+            disabled:opacity-50`,
             className,
           )}
           ref={ref}
@@ -24,8 +25,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         />
         <div
           className={cn(
-            `text-inter text-grey-400 pointer-events-none text-xl font-medium absolute
-            transition-all top-[30%] ease-in duration-150`,
+            `text-inter pointer-events-none absolute top-[30%] text-xl font-medium
+            text-grey-400 transition-all duration-150 ease-in`,
             !!props.value
               ? "top-[10%] text-sm"
               : "peer-focus:top-[10%] peer-focus:text-sm",

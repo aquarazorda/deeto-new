@@ -17,6 +17,7 @@ const cardVariants = cva(
     },
     defaultVariants: {
       variant: "default",
+      borders: "default",
     },
   },
 );

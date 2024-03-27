@@ -21,11 +21,9 @@ import { Route as PublicMIndexImport } from './routes/_public/m.index'
 const ReferenceLazyImport = createFileRoute('/_reference')()
 const PublicLazyImport = createFileRoute('/_public')()
 const IndexLazyImport = createFileRoute('/')()
+const ReferenceSettingsLazyImport = createFileRoute('/_reference/_settings')()
 const PublicLoginWithEmailLazyImport = createFileRoute(
   '/_public/login-with-email',
-)()
-const ReferenceSettingsIndexLazyImport = createFileRoute(
-  '/_reference/settings/',
 )()
 const ReferenceReferralsIndexLazyImport = createFileRoute(
   '/_reference/referrals/',
@@ -38,6 +36,9 @@ const ReferenceDashboardIndexLazyImport = createFileRoute(
 )()
 const ReferenceMyContentTypeIndexLazyImport = createFileRoute(
   '/_reference/my-content/$type/',
+)()
+const ReferenceSettingsSettingsMyProfileLazyImport = createFileRoute(
+  '/_reference/_settings/settings/my-profile',
 )()
 
 // Create/Update Routes
@@ -57,6 +58,13 @@ const IndexLazyRoute = IndexLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
 
+const ReferenceSettingsLazyRoute = ReferenceSettingsLazyImport.update({
+  id: '/_settings',
+  getParentRoute: () => ReferenceLazyRoute,
+} as any).lazy(() =>
+  import('./routes/_reference/_settings.lazy').then((d) => d.Route),
+)
+
 const PublicLoginWithEmailLazyRoute = PublicLoginWithEmailLazyImport.update({
   path: '/login-with-email',
   getParentRoute: () => PublicLazyRoute,
@@ -68,15 +76,6 @@ const PublicPartialAuthRouteRoute = PublicPartialAuthRouteImport.update({
   path: '/partial-auth',
   getParentRoute: () => PublicLazyRoute,
 } as any)
-
-const ReferenceSettingsIndexLazyRoute = ReferenceSettingsIndexLazyImport.update(
-  {
-    path: '/settings/',
-    getParentRoute: () => ReferenceLazyRoute,
-  } as any,
-).lazy(() =>
-  import('./routes/_reference/settings/index.lazy').then((d) => d.Route),
-)
 
 const ReferenceReferralsIndexLazyRoute =
   ReferenceReferralsIndexLazyImport.update({
@@ -117,6 +116,16 @@ const ReferenceMyContentTypeIndexLazyRoute =
     ),
   )
 
+const ReferenceSettingsSettingsMyProfileLazyRoute =
+  ReferenceSettingsSettingsMyProfileLazyImport.update({
+    path: '/settings/my-profile',
+    getParentRoute: () => ReferenceSettingsLazyRoute,
+  } as any).lazy(() =>
+    import('./routes/_reference/_settings/settings.my-profile.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -141,6 +150,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicLoginWithEmailLazyImport
       parentRoute: typeof PublicLazyImport
     }
+    '/_reference/_settings': {
+      preLoaderRoute: typeof ReferenceSettingsLazyImport
+      parentRoute: typeof ReferenceLazyImport
+    }
     '/_public/m/': {
       preLoaderRoute: typeof PublicMIndexImport
       parentRoute: typeof PublicLazyImport
@@ -157,9 +170,9 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReferenceReferralsIndexLazyImport
       parentRoute: typeof ReferenceLazyImport
     }
-    '/_reference/settings/': {
-      preLoaderRoute: typeof ReferenceSettingsIndexLazyImport
-      parentRoute: typeof ReferenceLazyImport
+    '/_reference/_settings/settings/my-profile': {
+      preLoaderRoute: typeof ReferenceSettingsSettingsMyProfileLazyImport
+      parentRoute: typeof ReferenceSettingsLazyImport
     }
     '/_reference/my-content/$type/': {
       preLoaderRoute: typeof ReferenceMyContentTypeIndexLazyImport
@@ -178,10 +191,12 @@ export const routeTree = rootRoute.addChildren([
     PublicMIndexRoute,
   ]),
   ReferenceLazyRoute.addChildren([
+    ReferenceSettingsLazyRoute.addChildren([
+      ReferenceSettingsSettingsMyProfileLazyRoute,
+    ]),
     ReferenceDashboardIndexLazyRoute,
     ReferenceMyContentIndexLazyRoute,
     ReferenceReferralsIndexLazyRoute,
-    ReferenceSettingsIndexLazyRoute,
     ReferenceMyContentTypeIndexLazyRoute,
   ]),
 ])
