@@ -1,4 +1,5 @@
 import { ReactNode, Suspense, lazy } from "react";
+import { Toaster } from "../ui/sonner";
 
 const TanStackRouterDevtools =
   process.env.NODE_ENV === "production"
@@ -22,6 +23,7 @@ export const Providers = ({ children }: { children: ReactNode }) => {
   return (
     <>
       {children}
+      <Toaster position="top-right" />
       <Suspense>
         <TanStackQueryDevTools initialIsOpen={false} />
       </Suspense>

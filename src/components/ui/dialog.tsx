@@ -79,17 +79,14 @@ const DialogFooter = ({
   className,
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) => (
-  <>
-    <div className="h-24" />
-    <div
-      className={cn(
-        `absolute bottom-0 flex w-full flex-col-reverse rounded-b-3xl border-t
-        bg-tint-purple/40 p-4 sm:flex-row sm:justify-end sm:space-x-2`,
-        className,
-      )}
-      {...props}
-    />
-  </>
+  <div
+    className={cn(
+      `absolute bottom-0 flex w-full flex-col-reverse rounded-b-3xl border-t
+      bg-tint-purple/40 p-4 sm:flex-row sm:justify-end sm:space-x-2`,
+      className,
+    )}
+    {...props}
+  />
 );
 DialogFooter.displayName = "DialogFooter";
 
@@ -115,6 +112,7 @@ const DialogDescription = React.forwardRef<
   <DialogPrimitive.Description ref={ref} asChild {...props}>
     <ScrollArea className="max-h-[50dvh] w-full">
       <div className={cn("px-4", className)}>{children}</div>
+      <div className="h-24" />
     </ScrollArea>
   </DialogPrimitive.Description>
 ));

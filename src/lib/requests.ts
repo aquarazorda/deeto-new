@@ -82,7 +82,13 @@ const post = <T extends ZodType, U>(url: string, schema: T, body: U) =>
     },
   });
 
+const post_ =
+  <T extends ZodType, U>(url: string, schema: T) =>
+  (body: U) =>
+    post(url, schema, body);
+
 export const api = {
   get,
   post,
+  post_,
 };

@@ -25,7 +25,7 @@ const RadioGroupLabel = React.forwardRef<
   return (
     <Label
       className={cn(
-        "text-inter cursor-pointer text-base font-bold text-primary-dark",
+        "text-inter text-base font-bold text-primary-dark",
         className,
       )}
       {...props}

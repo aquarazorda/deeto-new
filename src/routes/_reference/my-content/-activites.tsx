@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardDescription } from "@/components/ui/card";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { addonSchema } from "@/schemas/contributions";
-import { lazy, useMemo } from "react";
+import { lazy, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
 
@@ -23,6 +23,7 @@ export default function ReferenceActivitiesCard({
   addons: z.infer<typeof addonSchema>[];
 }) {
   const { t } = useTranslation();
+  const [dialogOpen, setDialogOpen] = useState(false);
   const filteredAddons = useMemo(
     () => addons.filter(({ type }) => !mainAddons.includes(type)),
     [addons],
@@ -35,13 +36,15 @@ export default function ReferenceActivitiesCard({
       <CardDescription className="flex flex-col gap-4 font-bold text-primary-dark">
         <div className="flex items-center justify-between">
           <p className="text-xl">{t("activities")}</p>
-          <Dialog>
+          <Dialog onOpenChange={setDialogOpen} open={dialogOpen}>
             <DialogTrigger asChild>
               <Button variant="outline" size="sm">
                 <Pen /> {t("edit")}
               </Button>
             </DialogTrigger>
-            <EditActivityDialogContent />
+            <EditActivityDialogContent
+              closeDialog={() => setDialogOpen(false)}
+            />
           </Dialog>
         </div>
         <div className="grid grid-cols-4 gap-4">
