@@ -19,6 +19,6 @@ export const authenticatedUserSchema = z.object({
   privileges: z.array(z.string().describe("reference")).optional(),
   profilePicture: avatarSchema.optional(),
   redeemableBalance: z.number().optional(),
-  preferredTimezone: z.string().describe("UTC+5"),
+  preferredTimezone: z.string().describe("UTC+5").nullable(),
   avatar: avatarSchema,
 });

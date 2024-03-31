@@ -78,6 +78,13 @@ export const fetchUser = async (fromLocal?: boolean) => {
   // if (window.location.href.includes("/m?")) {
   //   return;
   // }
+  const accessToken = getCookie("accessToken");
+  const refreshToken = getCookie("refreshToken");
+
+  if (!accessToken && !refreshToken) {
+    return;
+  }
+
   if (fromLocal) {
     const res = JSON.parse(localStorage.getItem("user") || "{}");
 

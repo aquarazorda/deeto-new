@@ -56,6 +56,7 @@ module.exports = {
       "tint-pink": "#FFE5EF",
       "tint-popup-bg": "#481453B2",
       "tint-white": "#FFFFFFA6",
+      "tint-white-2": "#ffffffe6",
       "tint-bg": "#F9F8FA",
       transparent: "transparent",
     },
