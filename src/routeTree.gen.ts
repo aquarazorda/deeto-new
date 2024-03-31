@@ -21,6 +21,7 @@ import { Route as PublicMIndexImport } from './routes/_public/m.index'
 const ReferenceLazyImport = createFileRoute('/_reference')()
 const PublicLazyImport = createFileRoute('/_public')()
 const IndexLazyImport = createFileRoute('/')()
+const OnboardingIndexLazyImport = createFileRoute('/onboarding/')()
 const ReferenceSettingsLazyImport = createFileRoute('/_reference/_settings')()
 const PublicLoginWithEmailLazyImport = createFileRoute(
   '/_public/login-with-email',
@@ -57,6 +58,13 @@ const IndexLazyRoute = IndexLazyImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
+
+const OnboardingIndexLazyRoute = OnboardingIndexLazyImport.update({
+  path: '/onboarding/',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() =>
+  import('./routes/onboarding/index.lazy').then((d) => d.Route),
+)
 
 const ReferenceSettingsLazyRoute = ReferenceSettingsLazyImport.update({
   id: '/_settings',
@@ -154,6 +162,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReferenceSettingsLazyImport
       parentRoute: typeof ReferenceLazyImport
     }
+    '/onboarding/': {
+      preLoaderRoute: typeof OnboardingIndexLazyImport
+      parentRoute: typeof rootRoute
+    }
     '/_public/m/': {
       preLoaderRoute: typeof PublicMIndexImport
       parentRoute: typeof PublicLazyImport
@@ -199,6 +211,7 @@ export const routeTree = rootRoute.addChildren([
     ReferenceReferralsIndexLazyRoute,
     ReferenceMyContentTypeIndexLazyRoute,
   ]),
+  OnboardingIndexLazyRoute,
 ])
 
 /* prettier-ignore-end */

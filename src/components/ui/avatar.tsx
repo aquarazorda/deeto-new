@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 import { VariantProps, cva } from "class-variance-authority";
 
 const avatarVariants = cva(
-  "relative flex shrink-0 overflow-hidden rounded-full rounded-tl-none",
+  "relative flex shrink-0 overflow-hidden rounded-full",
   {
     variants: {
       size: {
@@ -16,9 +16,15 @@ const avatarVariants = cva(
         lg: "size-32",
         xl: "size-36",
       },
+      rounded: {
+        default: "rounded-tl-none",
+        br: "rounded-br-none",
+        bl: "rounded-bl-none",
+      },
     },
     defaultVariants: {
       size: "default",
+      rounded: "default",
     },
   },
 );
@@ -30,10 +36,10 @@ interface AvatarProps
 const Avatar = React.forwardRef<
   React.ElementRef<typeof AvatarPrimitive.Root>,
   AvatarProps
->(({ className, size, ...props }, ref) => (
+>(({ className, size, rounded, ...props }, ref) => (
   <AvatarPrimitive.Root
     ref={ref}
-    className={cn(avatarVariants({ size, className }))}
+    className={cn(avatarVariants({ size, className, rounded }))}
     {...props}
   />
 ));
