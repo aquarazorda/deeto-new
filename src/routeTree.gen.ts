@@ -20,8 +20,8 @@ import { Route as PublicMIndexImport } from './routes/_public/m.index'
 
 const ReferenceLazyImport = createFileRoute('/_reference')()
 const PublicLazyImport = createFileRoute('/_public')()
+const OnboardingLazyImport = createFileRoute('/_onboarding')()
 const IndexLazyImport = createFileRoute('/')()
-const OnboardingIndexLazyImport = createFileRoute('/onboarding/')()
 const ReferenceSettingsLazyImport = createFileRoute('/_reference/_settings')()
 const PublicLoginWithEmailLazyImport = createFileRoute(
   '/_public/login-with-email',
@@ -34,6 +34,9 @@ const ReferenceMyContentIndexLazyImport = createFileRoute(
 )()
 const ReferenceDashboardIndexLazyImport = createFileRoute(
   '/_reference/dashboard/',
+)()
+const OnboardingOnboardingQuoteLazyImport = createFileRoute(
+  '/_onboarding/onboarding/quote',
 )()
 const ReferenceMyContentTypeIndexLazyImport = createFileRoute(
   '/_reference/my-content/$type/',
@@ -54,17 +57,15 @@ const PublicLazyRoute = PublicLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/_public.lazy').then((d) => d.Route))
 
+const OnboardingLazyRoute = OnboardingLazyImport.update({
+  id: '/_onboarding',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/_onboarding.lazy').then((d) => d.Route))
+
 const IndexLazyRoute = IndexLazyImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
-
-const OnboardingIndexLazyRoute = OnboardingIndexLazyImport.update({
-  path: '/onboarding/',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() =>
-  import('./routes/onboarding/index.lazy').then((d) => d.Route),
-)
 
 const ReferenceSettingsLazyRoute = ReferenceSettingsLazyImport.update({
   id: '/_settings',
@@ -114,6 +115,14 @@ const PublicMIndexRoute = PublicMIndexImport.update({
   getParentRoute: () => PublicLazyRoute,
 } as any)
 
+const OnboardingOnboardingQuoteLazyRoute =
+  OnboardingOnboardingQuoteLazyImport.update({
+    path: '/onboarding/quote',
+    getParentRoute: () => OnboardingLazyRoute,
+  } as any).lazy(() =>
+    import('./routes/_onboarding/onboarding.quote.lazy').then((d) => d.Route),
+  )
+
 const ReferenceMyContentTypeIndexLazyRoute =
   ReferenceMyContentTypeIndexLazyImport.update({
     path: '/my-content/$type/',
@@ -142,6 +151,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexLazyImport
       parentRoute: typeof rootRoute
     }
+    '/_onboarding': {
+      preLoaderRoute: typeof OnboardingLazyImport
+      parentRoute: typeof rootRoute
+    }
     '/_public': {
       preLoaderRoute: typeof PublicLazyImport
       parentRoute: typeof rootRoute
@@ -162,9 +175,9 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReferenceSettingsLazyImport
       parentRoute: typeof ReferenceLazyImport
     }
-    '/onboarding/': {
-      preLoaderRoute: typeof OnboardingIndexLazyImport
-      parentRoute: typeof rootRoute
+    '/_onboarding/onboarding/quote': {
+      preLoaderRoute: typeof OnboardingOnboardingQuoteLazyImport
+      parentRoute: typeof OnboardingLazyImport
     }
     '/_public/m/': {
       preLoaderRoute: typeof PublicMIndexImport
@@ -197,6 +210,7 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren([
   IndexLazyRoute,
+  OnboardingLazyRoute.addChildren([OnboardingOnboardingQuoteLazyRoute]),
   PublicLazyRoute.addChildren([
     PublicPartialAuthRouteRoute,
     PublicLoginWithEmailLazyRoute,
@@ -211,7 +225,6 @@ export const routeTree = rootRoute.addChildren([
     ReferenceReferralsIndexLazyRoute,
     ReferenceMyContentTypeIndexLazyRoute,
   ]),
-  OnboardingIndexLazyRoute,
 ])
 
 /* prettier-ignore-end */

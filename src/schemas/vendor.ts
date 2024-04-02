@@ -44,7 +44,7 @@ export const vendorSettingsSchema = z.object({
   firstToKnowEnabled: z.boolean(),
   interviewsEnabled: z.boolean(),
   collaborationNewProductEnabled: z.boolean(),
-  advisoryBoardEnabled: z.boolean(),
+  advisoryBoardEnabled: z.boolean().optional(),
   contentApprovalRequired: z.boolean(),
   deetoReviewRequired: z.boolean(),
   allowAnonymousReference: z.boolean(),

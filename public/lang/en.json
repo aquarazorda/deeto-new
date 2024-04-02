@@ -679,6 +679,7 @@
   "360_qa_missing_popup_title": "Looks like you skipped an important question.",
   "360_qa_missing_popup_subtitle": "Without your answers we won't be able to generate your User Story",
   "360_qa_missing_popup_confirm": "Answer question",
+  "360_quote_placeholder": "Please share your story. Our AI assistant will transform your words into an exceptional review",
   "360_quote_start_title": "Thank you for joining. Your knowledge has great value. Share it, help others and get rewarded.",
   "360_quote_start_subtitle": "Click Let's Start to begin.",
   "360_quote_start_button": "Let's start",

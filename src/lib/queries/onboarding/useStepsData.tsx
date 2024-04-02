@@ -5,14 +5,14 @@ import { onboardingStepSchema } from "@/schemas/onboarding";
 import { useQuery } from "@tanstack/react-query";
 import { z } from "zod";
 
-const stepsSchema = z.object({
+export const stepsSchema = z.object({
   profile: z.object({
-    companyName: z.string(),
-    firstName: z.string(),
-    lastName: z.string(),
+    companyName: z.string().optional(),
+    firstName: z.string().optional(),
+    lastName: z.string().optional(),
     influenceLevel: z.string(),
     rewardedAmount: z.number(),
-    title: z.string(),
+    title: z.string().optional(),
   }),
   steps: z.array(onboardingStepSchema),
 });

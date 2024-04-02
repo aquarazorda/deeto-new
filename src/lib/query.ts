@@ -5,4 +5,5 @@ export const queryKeys = {
   REFERENCE_REFERRALS: ["reference", "referrals"],
   ONBOARD_STEPS: ["onboard", "steps"],
   CONTRIBUTION_STEP_ADDONS: ["contribution", "addons"],
+  CONTRIBUTION_STEP: (step: string) => ["contribution", step],
 };

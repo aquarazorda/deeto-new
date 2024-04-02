@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import useStepsData from "@/lib/queries/onboarding/useStepsData";
 import { useUser, useUserPrivileges } from "@/lib/states/user";
-import { Navigate, createLazyFileRoute } from "@tanstack/react-router";
+import { Navigate, Outlet, createLazyFileRoute } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { useShallow } from "zustand/react/shallow";
 import QuestionMarkIcon from "~/icons/question-mark.svg?react";
@@ -20,6 +20,7 @@ import { VendorSettingsCurrency } from "@/components/deeto/currency/vendor-custo
 import { match } from "ts-pattern";
 import { CheckIcon, XIcon } from "lucide-react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { Suspense } from "react";
 
 const Content = () => {
   const { t } = useTranslation();
@@ -38,7 +39,7 @@ const Content = () => {
   }
 
   return (
-    <div className="h-screen w-screen bg-pink-green bg-cover">
+    <div className="min-w-screen min-h-screen bg-pink-green bg-cover">
       <div className="flex w-full items-center justify-end px-4 py-2">
         <Button
           variant="secondary"
@@ -100,10 +101,10 @@ const Content = () => {
           </Popover>
         </Card>
 
-        <ScrollArea className="max-w-full">
+        <ScrollArea className="max-w-full bg-tint-white-2 pr-4">
           <Card
-            className="flex flex-nowrap items-center gap-4 overflow-x-visible rounded-none
-              bg-tint-white-2"
+            className="flex flex-nowrap items-center gap-4 overflow-x-visible rounded-none border-none
+              bg-transparent"
           >
             {data.val.steps.map(
               ({ name, status }) =>
@@ -111,6 +112,7 @@ const Content = () => {
                   <Button
                     variant="ghost"
                     className="h-fit p-0 text-base font-normal text-primary"
+                    key={name}
                   >
                     {match(status)
                       .with("notStarted", () => (
@@ -134,11 +136,18 @@ const Content = () => {
           </Card>
           <ScrollBar orientation="horizontal" />
         </ScrollArea>
+        <Card className="rounded-t-none bg-tint-white-2 p-4">
+          <Suspense fallback="Loading...">
+            <Outlet />
+          </Suspense>
+        </Card>
+
+        <div className="h-20 lg:hidden"></div>
       </div>
     </div>
   );
 };
 
-export const Route = createLazyFileRoute("/onboarding/")({
+export const Route = createLazyFileRoute("/_onboarding")({
   component: Content,
 });

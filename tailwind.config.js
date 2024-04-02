@@ -103,6 +103,7 @@ module.exports = {
       boxShadow: {
         input: "rgba(59, 0, 135, 0.22) 0px 0px 0.625rem inset",
         card: "rgba(0, 0, 0, 0.1) 0px 0.25rem 0.375rem -0.0625rem, rgba(0, 0, 0, 0.05) 0px 0.125rem 0.25rem -0.125rem",
+        textarea: "rgba(59, 0, 135, 0.22) 0px 0px 10px inset",
       },
       keyframes: {
         "accordion-down": {
