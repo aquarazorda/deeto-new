@@ -34,6 +34,8 @@ import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
 import { useMoveToNextStep } from "./-utils";
+import { onboardingIdentifierSchema } from "@/schemas/onboarding";
+import { StepIdentifierEnum } from "@/lib/types/onboarding/steps";
 
 const responseSchema = z.object({
   allEndorsments: z
@@ -50,41 +52,45 @@ const responseSchema = z.object({
   endorsmentIds: z.array(z.string()),
 });
 
-const useSave = () =>
-  useMutation({
-    mutationFn: (values: z.infer<typeof responseSchema>) =>
-      api.post(endpoints.CONTRIBUTION_STEP_PATH("quote"), stepsSchema, values),
-  });
+const formSchema = responseSchema.omit({ allEndorsments: true }).extend({
+  quote: z.string().refine((str) => str.trim().split(" ").length > 24),
+});
 
-const Skip = ({
-  values: { allEndorsments, ...values },
-}: {
-  values: z.infer<typeof responseSchema>;
-}) => {
+const useSave = (type: z.infer<typeof onboardingIdentifierSchema>) => {
+  const moveToNext = useMoveToNextStep();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (values: z.infer<typeof formSchema>) =>
+      api.post(endpoints.CONTRIBUTION_STEP_PATH(type), stepsSchema, values),
+    onSuccess: (val) => {
+      if (val.ok) {
+        queryClient.setQueryData(
+          queryKeys.CONTRIBUTION_STEP("quote"),
+          (data: z.infer<typeof responseSchema>) => {
+            return {
+              ...data,
+              ...val.val,
+            };
+          },
+        );
+
+        moveToNext();
+      }
+    },
+  });
+};
+
+const Skip = ({ values }: { values: z.infer<typeof formSchema> }) => {
   const [open, setOpen] = useState(false);
   const { t } = useTranslation();
-  const { mutateAsync } = useSave();
-  const queryClient = useQueryClient();
-  const moveToNext = useMoveToNextStep();
+  const { mutateAsync, isPending } = useSave(StepIdentifierEnum.QUOTE);
 
-  const onSkip = async () => {
-    const res = await mutateAsync({
+  const onSkip = () => {
+    mutateAsync({
       ...values,
       consentToUse: false,
     });
-
-    if (res.ok) {
-      queryClient.setQueryData(
-        queryKeys.CONTRIBUTION_STEP("quote"),
-        (data: z.infer<typeof responseSchema>) => {
-          return {
-            ...data,
-            ...values,
-          };
-        },
-      );
-      moveToNext();
-    }
   };
 
   return (
@@ -106,7 +112,9 @@ const Skip = ({
             {t("skip")}
           </Button>
           <DialogClose asChild>
-            <Button className="flex-1">{t("360_quote_skip_confirm")}</Button>
+            <Button className="flex-1" disabled={isPending}>
+              {t("360_quote_skip_confirm")}
+            </Button>
           </DialogClose>
         </div>
       </DialogContent>
@@ -116,18 +124,20 @@ const Skip = ({
 
 const Component = () => {
   const { t } = useTranslation();
+  const { mutateAsync, isPending } = useSave(StepIdentifierEnum.QUOTE);
   const { data } = useSuspenseQuery({
     queryFn: () =>
       api.get(endpoints.CONTRIBUTION_STEP_PATH("quote"), responseSchema),
     queryKey: [queryKeys.CONTRIBUTION_STEP("quote")],
   });
-  const form = useForm<z.infer<typeof responseSchema>>({
-    resolver: zodResolver(responseSchema),
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
   });
 
   useEffect(() => {
     if (data?.ok) {
-      form.reset(data.val);
+      const { allEndorsments, ...values } = data.val;
+      form.reset(values);
     }
   }, [data]);
 
@@ -138,7 +148,7 @@ const Component = () => {
   return (
     <Form {...form}>
       <h1 className="mb-6 text-2xl font-bold">{t("360_quote_title")}</h1>
-      <form>
+      <form onSubmit={form.handleSubmit((values) => mutateAsync(values))}>
         <div className="divide-y divide-grey-200 font-inter leading-snug *:py-6 first:*:pt-0 last:*:pb-0">
           <FormField
             control={form.control}
@@ -236,7 +246,14 @@ const Component = () => {
             bg-tint-white-2 p-2"
         >
           <Skip values={form.getValues()} />
-          <Button size="sm">{t("continue")}</Button>
+          <Button
+            size="sm"
+            type="submit"
+            loading={isPending}
+            disabled={!form.formState.isValid || !form.getValues().consentToUse}
+          >
+            {t("continue")}
+          </Button>
         </div>
       </form>
     </Form>

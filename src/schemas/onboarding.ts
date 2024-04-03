@@ -11,8 +11,10 @@ const rewardSchema = z.object({
   rewardedForSubmit: z.boolean().optional(),
 });
 
+export const onboardingIdentifierSchema = z.nativeEnum(StepIdentifierEnum);
+
 export const onboardingStepSchema = z.object({
-  identifier: z.nativeEnum(StepIdentifierEnum),
+  identifier: onboardingIdentifierSchema,
   name: z.nativeEnum(StepNameEnum).or(z.enum(["Activities", "G2 Review"])),
   status: z.enum(["finished", "skipped", "hidden", "notStarted"]),
   rewards: rewardSchema.optional(),
