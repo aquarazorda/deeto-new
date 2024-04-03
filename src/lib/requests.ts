@@ -73,22 +73,36 @@ const fetcher = async <T extends ZodType>(
 const get = <T extends ZodType>(url: string, schema: T) =>
   fetcher<T>(url, schema);
 
-const post = <T extends ZodType, U>(url: string, schema: T, body: U) =>
-  fetcher(url, schema, {
-    method: "POST",
-    body: JSON.stringify(body),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+const fetcherWithBody =
+  (method: "POST" | "PATCH") =>
+  async <T extends ZodType, U>(url: string, schema: T, body: U) => {
+    return fetcher(url, schema, {
+      method,
+      body: JSON.stringify(body),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  };
+
+const post = fetcherWithBody("POST");
 
 const post_ =
   <T extends ZodType, U>(url: string, schema: T) =>
   (body: U) =>
     post(url, schema, body);
 
+const patch = fetcherWithBody("PATCH");
+
+const patch_ =
+  <T extends ZodType, U>(url: string, schema: T) =>
+  (body: U) =>
+    patch(url, schema, body);
+
 export const api = {
   get,
   post,
   post_,
+  patch,
+  patch_,
 };

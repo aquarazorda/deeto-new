@@ -945,6 +945,7 @@
   "marked_as_won": "Marked as won",
   "markedWon.tooltip": "Please make sure to update the status of the opportunity to make sure the referrer gets a reward when it’s due.",
   "fields.error.reason": "Rejection Reason is required",
+  "something_went_wrong": "Oops! Something went wrong",
   "copy_onboarding_link": "Copy onboarding link",
   "view": "View",
   "available_for_call": "Available for call",

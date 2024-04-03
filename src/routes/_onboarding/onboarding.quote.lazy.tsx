@@ -36,6 +36,7 @@ import { z } from "zod";
 import { useMoveToNextStep } from "./-utils";
 import { onboardingIdentifierSchema } from "@/schemas/onboarding";
 import { StepIdentifierEnum } from "@/lib/types/onboarding/steps";
+import TextareaWordCount from "@/components/deeto/textarea/word-count";
 
 const responseSchema = z.object({
   allEndorsments: z
@@ -155,13 +156,16 @@ const Component = () => {
             name="quote"
             render={({ field }) => (
               <FormItem>
-                <FormControl>
-                  <Textarea
-                    {...field}
-                    placeholder={t("360_quote_placeholder")}
-                    className="resize-none rounded-b-none"
-                  />
-                </FormControl>
+                <div>
+                  <FormControl>
+                    <Textarea
+                      {...field}
+                      placeholder={t("360_quote_placeholder")}
+                      className="resize-none rounded-b-none"
+                    />
+                  </FormControl>
+                  <TextareaWordCount limit={25} value={field.value} />
+                </div>
                 <FormMessage />
               </FormItem>
             )}

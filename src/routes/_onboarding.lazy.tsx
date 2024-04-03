@@ -20,12 +20,14 @@ import { VendorSettingsCurrency } from "@/components/deeto/currency/vendor-custo
 import { match } from "ts-pattern";
 import { CheckIcon, XIcon } from "lucide-react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
+import OnboardingEditProfile from "./_onboarding/-edit-profile";
 
 const Content = () => {
   const { t } = useTranslation();
   const { data } = useStepsData();
   const { isReference } = useUserPrivileges();
+  const [isEditOpen, setIsEditOpen] = useState(false);
   const [user, vendorName] = useUser(
     useShallow((state) => [state.me, state.vendor.name]),
   );
@@ -79,7 +81,11 @@ const Content = () => {
               </span>
             </div>
           </div>
-          <Button variant="outline" className="w-full">
+          <Button
+            variant="outline"
+            className="w-full"
+            onClick={() => setIsEditOpen(!isEditOpen)}
+          >
             <PenIcon /> {t("edit")}
           </Button>
         </Card>
@@ -137,9 +143,13 @@ const Content = () => {
           <ScrollBar orientation="horizontal" />
         </ScrollArea>
         <Card className="rounded-t-none bg-tint-white-2 p-4">
-          <Suspense fallback="Loading...">
-            <Outlet />
-          </Suspense>
+          {!isEditOpen ? (
+            <Suspense fallback="Loading...">
+              <Outlet />
+            </Suspense>
+          ) : (
+            <OnboardingEditProfile close={() => setIsEditOpen(false)} />
+          )}
         </Card>
 
         <div className="h-20 lg:hidden"></div>

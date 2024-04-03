@@ -4,25 +4,27 @@ import { customizedFormValueSchema } from "./customized-form";
 import { avatarSchema } from "./authenticated-user";
 import { vendorSettingsSchema } from "./vendor";
 
-const meSchema = z
-  .object({
-    accountContacts: z.array(accountContactSchema).optional(),
-    avatar: z.object({
-      url: z.string().nullable().optional(),
-    }),
-    email: z.string(),
-    secondaryEmail: z.string().nullable().optional(),
-    customizedFormValues: z.array(customizedFormValueSchema).optional(),
-    privileges: z.array(z.enum(["reference", "vendor", "prospect"])),
-    firstName: z.string(),
-    lastName: z.string(),
-  })
-  .transform(({ privileges, ...rest }) => ({
-    ...rest,
-    isVendor: privileges.includes("vendor"),
-    isReference: privileges.includes("reference"),
-    isProspect: privileges.includes("prospect"),
-  }));
+export const profileSchema = z.object({
+  accountContacts: z.array(accountContactSchema).optional(),
+  avatar: z.object({
+    url: z.string().nullable().optional(),
+  }),
+  email: z.string(),
+  secondaryEmail: z.string().nullable().optional(),
+  customizedFormValues: z.array(customizedFormValueSchema).optional(),
+  privileges: z.array(z.enum(["reference", "vendor", "prospect"])),
+  firstName: z.string(),
+  title: z.string(),
+  linkedInProfile: z.string().nullable().optional(),
+  lastName: z.string(),
+});
+
+const meSchema = profileSchema.transform(({ privileges, ...rest }) => ({
+  ...rest,
+  isVendor: privileges.includes("vendor"),
+  isReference: privileges.includes("reference"),
+  isProspect: privileges.includes("prospect"),
+}));
 
 const crmIntegrationSchema = z.object({
   provider: z.enum(["salesforce", "hubspot"]),
