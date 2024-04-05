@@ -38,6 +38,9 @@ const ReferenceDashboardIndexLazyImport = createFileRoute(
 const OnboardingOnboardingIndexLazyImport = createFileRoute(
   '/_onboarding/onboarding/',
 )()
+const OnboardingOnboardingReviewLazyImport = createFileRoute(
+  '/_onboarding/onboarding/review',
+)()
 const OnboardingOnboardingQuoteLazyImport = createFileRoute(
   '/_onboarding/onboarding/quote',
 )()
@@ -126,6 +129,14 @@ const PublicMIndexRoute = PublicMIndexImport.update({
   getParentRoute: () => PublicLazyRoute,
 } as any)
 
+const OnboardingOnboardingReviewLazyRoute =
+  OnboardingOnboardingReviewLazyImport.update({
+    path: '/onboarding/review',
+    getParentRoute: () => OnboardingLazyRoute,
+  } as any).lazy(() =>
+    import('./routes/_onboarding/onboarding.review.lazy').then((d) => d.Route),
+  )
+
 const OnboardingOnboardingQuoteLazyRoute =
   OnboardingOnboardingQuoteLazyImport.update({
     path: '/onboarding/quote',
@@ -190,6 +201,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OnboardingOnboardingQuoteLazyImport
       parentRoute: typeof OnboardingLazyImport
     }
+    '/_onboarding/onboarding/review': {
+      preLoaderRoute: typeof OnboardingOnboardingReviewLazyImport
+      parentRoute: typeof OnboardingLazyImport
+    }
     '/_public/m/': {
       preLoaderRoute: typeof PublicMIndexImport
       parentRoute: typeof PublicLazyImport
@@ -227,6 +242,7 @@ export const routeTree = rootRoute.addChildren([
   IndexLazyRoute,
   OnboardingLazyRoute.addChildren([
     OnboardingOnboardingQuoteLazyRoute,
+    OnboardingOnboardingReviewLazyRoute,
     OnboardingOnboardingIndexLazyRoute,
   ]),
   PublicLazyRoute.addChildren([

@@ -1,11 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
-  DialogClose,
-  DialogContent,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import {
   Form,
   FormControl,
   FormDescription,
@@ -16,27 +11,21 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { endpoints } from "@/lib/endpoints";
-import { stepsSchema } from "@/lib/queries/onboarding/useStepsData";
 import { queryKeys } from "@/lib/query";
 import { api } from "@/lib/requests";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Dialog } from "@radix-ui/react-dialog";
-import {
-  useMutation,
-  useQueryClient,
-  useSuspenseQuery,
-} from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { createLazyFileRoute } from "@tanstack/react-router";
 import { PlusIcon, XIcon } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
-import { useMoveToNextStep } from "./-utils";
-import { onboardingIdentifierSchema } from "@/schemas/onboarding";
 import { StepIdentifierEnum } from "@/lib/types/onboarding/steps";
 import TextareaWordCount from "@/components/deeto/textarea/word-count";
+import { useOnboardingSave } from "./-skipper";
+import OnboardingFooter from "./-footer";
 
 const responseSchema = z.object({
   allEndorsments: z
@@ -57,75 +46,13 @@ const formSchema = responseSchema.omit({ allEndorsments: true }).extend({
   quote: z.string().refine((str) => str.trim().split(" ").length > 24),
 });
 
-const useSave = (type: z.infer<typeof onboardingIdentifierSchema>) => {
-  const moveToNext = useMoveToNextStep();
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: (values: z.infer<typeof formSchema>) =>
-      api.post(endpoints.CONTRIBUTION_STEP_PATH(type), stepsSchema, values),
-    onSuccess: (val) => {
-      if (val.ok) {
-        queryClient.setQueryData(
-          queryKeys.CONTRIBUTION_STEP("quote"),
-          (data: z.infer<typeof responseSchema>) => {
-            return {
-              ...data,
-              ...val.val,
-            };
-          },
-        );
-
-        moveToNext();
-      }
-    },
-  });
-};
-
-const Skip = ({ values }: { values: z.infer<typeof formSchema> }) => {
-  const [open, setOpen] = useState(false);
-  const { t } = useTranslation();
-  const { mutateAsync, isPending } = useSave(StepIdentifierEnum.QUOTE);
-
-  const onSkip = () => {
-    mutateAsync({
-      ...values,
-      consentToUse: false,
-    });
-  };
-
-  return (
-    <Dialog onOpenChange={setOpen} open={open}>
-      <DialogTrigger>
-        <Button
-          variant="link"
-          size="sm"
-          className="text-secondary-purple underline"
-        >
-          {t("skip")}
-        </Button>
-      </DialogTrigger>
-      <DialogContent hideCloseButton className="w-full">
-        <h1 className="text-3xl font-bold">{t("360_quote_skip_title")}</h1>
-        <p>{t("360_quote_skip_subtitle")}</p>
-        <div className="flex flex-wrap gap-4 pb-8">
-          <Button variant="outline" className="flex-1" onClick={onSkip}>
-            {t("skip")}
-          </Button>
-          <DialogClose asChild>
-            <Button className="flex-1" disabled={isPending}>
-              {t("360_quote_skip_confirm")}
-            </Button>
-          </DialogClose>
-        </div>
-      </DialogContent>
-    </Dialog>
-  );
-};
-
 const Component = () => {
   const { t } = useTranslation();
-  const { mutateAsync, isPending } = useSave(StepIdentifierEnum.QUOTE);
+  const { mutateAsync, isPending } = useOnboardingSave(
+    StepIdentifierEnum.QUOTE,
+    formSchema,
+    responseSchema,
+  );
   const { data } = useSuspenseQuery({
     queryFn: () =>
       api.get(endpoints.CONTRIBUTION_STEP_PATH("quote"), responseSchema),
@@ -245,20 +172,14 @@ const Component = () => {
             )}
           />
         </div>
-        <div
-          className="fixed bottom-1 left-0 flex w-full items-center justify-between rounded-full
-            bg-tint-white-2 p-2"
-        >
-          <Skip values={form.getValues()} />
-          <Button
-            size="sm"
-            type="submit"
-            loading={isPending}
-            disabled={!form.formState.isValid || !form.getValues().consentToUse}
-          >
-            {t("continue")}
-          </Button>
-        </div>
+        <OnboardingFooter
+          values={form.getValues()}
+          stepName={StepIdentifierEnum.QUOTE}
+          formSchema={formSchema}
+          responseSchema={responseSchema}
+          disabled={!form.formState.isValid || !form.getValues().consentToUse}
+          isPending={isPending}
+        />
       </form>
     </Form>
   );

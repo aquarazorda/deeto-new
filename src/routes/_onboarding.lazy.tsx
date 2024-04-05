@@ -22,12 +22,15 @@ import { CheckIcon, XIcon } from "lucide-react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Suspense, useState } from "react";
 import OnboardingEditProfile from "./_onboarding/-edit-profile";
+import { useCurrentStepIndex } from "./_onboarding/-utils";
+import { StepIdentifierEnum } from "@/lib/types/onboarding/steps";
 
 const Content = () => {
   const { t } = useTranslation();
   const { data } = useStepsData();
   const { isReference } = useUserPrivileges();
   const [isEditOpen, setIsEditOpen] = useState(false);
+  const currentStepIndex = useCurrentStepIndex();
   const [user, vendorName] = useUser(
     useShallow((state) => [state.me, state.vendor.name]),
   );
@@ -36,8 +39,23 @@ const Content = () => {
     return <Navigate to="/" />;
   }
 
-  if (!data?.ok) {
+  if (!data?.ok || currentStepIndex === undefined) {
     return null;
+  }
+
+  const getRedirectRoute = (index: number): StepIdentifierEnum =>
+    match(data.val.steps[index].status)
+      .with("notStarted", "hidden", () => getRedirectRoute(-1))
+      .otherwise(() => data.val.steps[index].identifier);
+
+  if (
+    match(data.val.steps[currentStepIndex - 1].status)
+      .with("notStarted", "hidden", () => true)
+      .otherwise(() => false)
+  ) {
+    const redirect = getRedirectRoute(currentStepIndex - 1);
+    // @ts-ignore
+    return <Navigate to={`/onboarding/${redirect}`} />;
   }
 
   return (
