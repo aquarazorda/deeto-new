@@ -19,8 +19,8 @@ import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
 import OnboardingFooter from "./-footer";
-import { useOnboardingSave } from "./-skipper";
 import { StepIdentifierEnum } from "@/lib/types/onboarding/steps";
+import useSaveOnboardingStep from "@/lib/mutations/useSaveOnboardingStep";
 
 const responseSchema = z.object({
   review: z.string(),
@@ -33,10 +33,9 @@ const formSchema = responseSchema.extend({
 
 const Component = () => {
   const { t } = useTranslation();
-  const { isPending } = useOnboardingSave(
+  const { isPending, mutateAsync } = useSaveOnboardingStep(
     StepIdentifierEnum.REVIEW,
     formSchema,
-    responseSchema,
   );
 
   const { data } = useSuspenseQuery({
@@ -57,7 +56,10 @@ const Component = () => {
 
   return (
     <Form {...form}>
-      <form className="space-y-4">
+      <form
+        className="space-y-4"
+        onSubmit={form.handleSubmit((values) => mutateAsync(values))}
+      >
         <h1 className="text-2xl font-bold">{t("360_review_ready_title")}</h1>
         <p className="font-inter text-lg leading-snug">
           {t("360_review_ready_description")}
@@ -109,4 +111,3 @@ const Component = () => {
 export const Route = createLazyFileRoute("/_onboarding/onboarding/review")({
   component: Component,
 });
-

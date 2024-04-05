@@ -24,8 +24,8 @@ import { useTranslation } from "react-i18next";
 import { z } from "zod";
 import { StepIdentifierEnum } from "@/lib/types/onboarding/steps";
 import TextareaWordCount from "@/components/deeto/textarea/word-count";
-import { useOnboardingSave } from "./-skipper";
 import OnboardingFooter from "./-footer";
+import useSaveOnboardingStep from "@/lib/mutations/useSaveOnboardingStep";
 
 const responseSchema = z.object({
   allEndorsments: z
@@ -48,10 +48,9 @@ const formSchema = responseSchema.omit({ allEndorsments: true }).extend({
 
 const Component = () => {
   const { t } = useTranslation();
-  const { mutateAsync, isPending } = useOnboardingSave(
+  const { mutateAsync, isPending } = useSaveOnboardingStep(
     StepIdentifierEnum.QUOTE,
     formSchema,
-    responseSchema,
   );
   const { data } = useSuspenseQuery({
     queryFn: () =>

@@ -3,7 +3,12 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import useStepsData from "@/lib/queries/onboarding/useStepsData";
 import { useUser, useUserPrivileges } from "@/lib/states/user";
-import { Navigate, Outlet, createLazyFileRoute } from "@tanstack/react-router";
+import {
+  Link,
+  Navigate,
+  Outlet,
+  createLazyFileRoute,
+} from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { useShallow } from "zustand/react/shallow";
 import QuestionMarkIcon from "~/icons/question-mark.svg?react";
@@ -49,7 +54,7 @@ const Content = () => {
       .otherwise(() => data.val.steps[index].identifier);
 
   if (
-    match(data.val.steps[currentStepIndex - 1].status)
+    match(data.val.steps[currentStepIndex - 1]?.status)
       .with("notStarted", "hidden", () => true)
       .otherwise(() => false)
   ) {
@@ -131,29 +136,30 @@ const Content = () => {
               bg-transparent"
           >
             {data.val.steps.map(
-              ({ name, status }) =>
+              ({ name, status, identifier }) =>
                 status !== "hidden" && (
-                  <Button
-                    variant="ghost"
-                    className="h-fit p-0 text-base font-normal text-primary"
-                    key={name}
-                  >
-                    {match(status)
-                      .with("notStarted", () => (
-                        <Circle className="text-grey-200" />
-                      ))
-                      .with("finished", () => (
-                        <div className="jusify-center flex size-6 items-center rounded-full bg-secondary-green">
-                          <CheckIcon className="h-5 text-white" />
-                        </div>
-                      ))
-                      .with("skipped", () => (
-                        <div className="jusify-center flex size-6 items-center rounded-full bg-grey-200">
-                          <XIcon className="h-5 text-white" />
-                        </div>
-                      ))
-                      .otherwise(() => "Not implemented")}
-                    {name}
+                  <Button variant="ghost" key={name} asChild>
+                    <Link
+                      to={`/onboarding/${identifier}`}
+                      className="flex h-fit items-center gap-2 text-nowrap p-0 text-base font-normal text-primary"
+                    >
+                      {match(status)
+                        .with("notStarted", () => (
+                          <Circle className="text-grey-200" />
+                        ))
+                        .with("finished", () => (
+                          <div className="jusify-center flex size-6 items-center rounded-full bg-secondary-green">
+                            <CheckIcon className="h-5 text-white" />
+                          </div>
+                        ))
+                        .with("skipped", () => (
+                          <div className="jusify-center flex size-6 items-center rounded-full bg-grey-200">
+                            <XIcon className="h-5 text-white" />
+                          </div>
+                        ))
+                        .otherwise(() => "Not implemented")}
+                      {name}
+                    </Link>
                   </Button>
                 ),
             )}

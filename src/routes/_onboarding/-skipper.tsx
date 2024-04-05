@@ -1,10 +1,5 @@
 import { useState } from "react";
-import { useMoveToNextStep } from "./-utils";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { ZodSchema, z } from "zod";
-import { api } from "@/lib/requests";
-import { endpoints } from "@/lib/endpoints";
-import { queryKeys } from "@/lib/query";
+import { ZodSchema } from "zod";
 import { useTranslation } from "react-i18next";
 import { StepIdentifierEnum } from "@/lib/types/onboarding/steps";
 import {
@@ -14,57 +9,22 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-
-export const useOnboardingSave = (
-  stepName: StepIdentifierEnum,
-  formSchema: ZodSchema,
-  responseSchema: ZodSchema,
-) => {
-  const moveToNext = useMoveToNextStep();
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: (values: z.infer<typeof formSchema>) =>
-      api.post(
-        endpoints.CONTRIBUTION_STEP_PATH(stepName),
-        responseSchema,
-        values,
-      ),
-    onSuccess: (val) => {
-      if (val.ok) {
-        queryClient.setQueryData(
-          queryKeys.CONTRIBUTION_STEP(stepName),
-          (data: z.infer<typeof responseSchema>) => {
-            return {
-              ...data,
-              ...val.val,
-            };
-          },
-        );
-
-        moveToNext();
-      }
-    },
-  });
-};
+import useSaveOnboardingStep from "@/lib/mutations/useSaveOnboardingStep";
 
 export default function OnboardingSkipper<T extends object>({
   values,
   stepName,
   formSchema,
-  responseSchema,
 }: {
   values: T;
   stepName: StepIdentifierEnum;
   formSchema: ZodSchema;
-  responseSchema: ZodSchema;
 }) {
   const [open, setOpen] = useState(false);
   const { t } = useTranslation();
-  const { mutateAsync, isPending } = useOnboardingSave(
+  const { mutateAsync, isPending } = useSaveOnboardingStep(
     StepIdentifierEnum.QUOTE,
     formSchema,
-    responseSchema,
   );
 
   const onSkip = () => {

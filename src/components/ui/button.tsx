@@ -69,8 +69,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         type={type ?? "button"}
         {...props}
       >
-        {!asChild && loading && <Spinner />}
-        {children}
+        <>
+          {!asChild && loading && <Spinner />}
+          {children}
+        </>
       </Comp>
     );
   },
