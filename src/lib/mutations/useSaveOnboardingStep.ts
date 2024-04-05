@@ -24,21 +24,36 @@ export default function useSaveOnboardingStep(
 
   return useMutation({
     mutationFn: (values: z.infer<typeof formSchema>) =>
-      api.post(
-        endpoints.CONTRIBUTION_STEP_PATH(stepName),
-        onboardingPostResponseSchema,
-        values,
-      ),
+      api
+        .post(
+          endpoints.CONTRIBUTION_STEP_PATH(stepName),
+          onboardingPostResponseSchema,
+          values,
+        )
+        .then((res) => {
+          if (res.ok) {
+            queryClient.setQueryData(
+              queryKeys.CONTRIBUTION_STEP(stepName),
+              (data: z.infer<typeof formSchema>) => ({
+                ...data,
+                ...values,
+              }),
+            );
+          }
+
+          return res;
+        }),
     onSuccess: (val) => {
       if (val.ok) {
         queryClient.setQueryData(
-          queryKeys.CONTRIBUTION_STEP(stepName),
-          (data: z.infer<typeof formSchema>) => {
-            return {
-              ...data,
-              ...val.val,
-            };
-          },
+          queryKeys.ONBOARD_STEPS,
+          (data: z.infer<typeof onboardingPostResponseSchema>) => ({
+            profile: {
+              ...data.profile,
+              ...val.val.profile,
+            },
+            steps: val.val.steps,
+          }),
         );
 
         moveToNext();

@@ -8,7 +8,6 @@ type Props<T extends ZodSchema> = {
   values: z.infer<T>;
   stepName: StepIdentifierEnum;
   formSchema: T;
-  responseSchema: ZodSchema;
   disabled: boolean;
   isPending: boolean;
 };
@@ -17,7 +16,6 @@ export default function OnboardingFooter<T extends ZodSchema>({
   values,
   stepName,
   formSchema,
-  responseSchema,
   disabled,
   isPending,
 }: Props<T>) {
@@ -32,7 +30,6 @@ export default function OnboardingFooter<T extends ZodSchema>({
         values={values}
         stepName={stepName}
         formSchema={formSchema}
-        responseSchema={responseSchema}
       />
       <Button size="sm" type="submit" loading={isPending} disabled={disabled}>
         {t("continue")}

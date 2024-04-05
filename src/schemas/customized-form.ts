@@ -22,7 +22,7 @@ const formTypeSchema = z.enum([
   "referenceUserstoryKPIs",
 ]);
 
-const customizedFormFieldSchema = z.object({
+export const customizedFormFieldSchema = z.object({
   customizedFormFieldId: z.string(),
   vendorId: z.string(),
   formType: formTypeSchema,

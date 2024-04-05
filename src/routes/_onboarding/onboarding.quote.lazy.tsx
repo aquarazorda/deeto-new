@@ -54,8 +54,11 @@ const Component = () => {
   );
   const { data } = useSuspenseQuery({
     queryFn: () =>
-      api.get(endpoints.CONTRIBUTION_STEP_PATH("quote"), responseSchema),
-    queryKey: [queryKeys.CONTRIBUTION_STEP("quote")],
+      api.get(
+        endpoints.CONTRIBUTION_STEP_PATH(StepIdentifierEnum.QUOTE),
+        responseSchema,
+      ),
+    queryKey: queryKeys.CONTRIBUTION_STEP(StepIdentifierEnum.QUOTE),
   });
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -175,7 +178,6 @@ const Component = () => {
           values={form.getValues()}
           stepName={StepIdentifierEnum.QUOTE}
           formSchema={formSchema}
-          responseSchema={responseSchema}
           disabled={!form.formState.isValid || !form.getValues().consentToUse}
           isPending={isPending}
         />

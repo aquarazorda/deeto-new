@@ -837,6 +837,7 @@
   "was_this_helpful": "Was this helpful?",
   "questionsandanswers": "Q&A",
   "questionsAndAnswers": "Q&A",
+  "step_of": "Step {{from}} of {{to}}",
   "choose_reference": "choose reference #{{from}} OF 3",
   "assetTypes": "Asset Types",
   "type_not_available": "{{type}} not available",

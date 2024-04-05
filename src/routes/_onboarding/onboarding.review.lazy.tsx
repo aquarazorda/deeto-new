@@ -40,8 +40,11 @@ const Component = () => {
 
   const { data } = useSuspenseQuery({
     queryFn: () =>
-      api.get(endpoints.CONTRIBUTION_STEP_PATH("review"), responseSchema),
-    queryKey: [queryKeys.CONTRIBUTION_STEP("review")],
+      api.get(
+        endpoints.CONTRIBUTION_STEP_PATH(StepIdentifierEnum.REVIEW),
+        responseSchema,
+      ),
+    queryKey: queryKeys.CONTRIBUTION_STEP(StepIdentifierEnum.REVIEW),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -70,7 +73,7 @@ const Component = () => {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Textarea rows={15} {...field} />
+                <Textarea rows={13} {...field} className="text-lg" />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -99,7 +102,6 @@ const Component = () => {
           stepName={StepIdentifierEnum.REVIEW}
           values={form.getValues()}
           formSchema={formSchema}
-          responseSchema={responseSchema}
           isPending={isPending}
           disabled={!form.formState.isValid || !form.getValues().consentToUse}
         />
